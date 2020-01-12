@@ -377,3 +377,5 @@ MigrationBackup/
 .ionide/
 
 redis
+
+*.code-workspace
