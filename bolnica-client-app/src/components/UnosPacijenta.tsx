@@ -54,6 +54,7 @@ class UnosPacijenta extends React.Component<{}, State>
     }
 
     potvrdiPacijenta = (): void => {
+        this.setState({ datumSmestanja: new Date().toLocaleDateString() })
         console.log(this.state);
         alert(`Klik na dugme`);
     }
