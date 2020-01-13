@@ -25,16 +25,19 @@ class UnosPacijenta extends React.Component<{}, State>
             <div className="col-sm-6 offset-sm-3 text-center">
                 <h1>Unesi detalje o pacijentu</h1>
                 <div className="form-group">
+                    <label className="control-label">Ime:</label>
                     <input type="text" 
                            name="ime" 
                            placeholder="Unesi ime" 
                            className="form-control"
                            onChange={this.onChangeInput}/>
+                    <label className="control-label">Prezime:</label>
                     <input type="text" 
                            name="prezime" 
                            placeholder="Unesi prezime" 
                            className="form-control"
                            onChange={this.onChangeInput}/>
+                    <label className="control-label">Dijagnoza:</label>       
                     <textarea name="dijagnoza" 
                               placeholder="Unesi dijagnozu" 
                               className="form-control"

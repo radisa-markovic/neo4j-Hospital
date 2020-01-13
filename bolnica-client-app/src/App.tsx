@@ -4,6 +4,7 @@ import UnosPacijenta from './components/UnosPacijenta';
 import LoginDoktor from './components/LoginDoktor';
 import NavigacionaTraka from './components/NavigacionaTraka';
 import HomePage from './components/Home';
+import RegistracijaDoktor from './components/RegistracijaDoktor';
 
 const App: React.FC = () => {
   return (
@@ -12,8 +13,9 @@ const App: React.FC = () => {
         <NavigacionaTraka />
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route exact path="/unesiPacijenta" component={UnosPacijenta} />
           <Route exact path="/loginDoktor" component={LoginDoktor} />
+          <Route exact path="/registracijaDoktor" component={RegistracijaDoktor} />
+          <Route exact path="/unesiPacijenta" component={UnosPacijenta} />
         </Switch>
       </BrowserRouter>
     </React.Fragment>

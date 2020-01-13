@@ -15,7 +15,7 @@ namespace BolnicaAPI.Controllers
         private GraphClient _klijent = new GraphClient(new Uri("http://localhost:7474/db/data"), "neo4j", "bolnica");
         // GET: api/Doktor/VratiDoktore
         [HttpGet]
-        public IEnumerable<Doktor> VratiDoktore(string korisnickoIme, string prezimeNeko)
+        public IEnumerable<Doktor> VratiDoktore()
         {
             this._klijent.Connect();//kapiram da je ruzno, al za sada nek radi, kad bude vreme cu da se ucim i DI-ja i tako toga
             var query = this._klijent.Cypher
@@ -39,14 +39,12 @@ namespace BolnicaAPI.Controllers
                                     .Return(doktor => doktor.As<Doktor>())
                                     .Results;
 
-            Doktor doktor = upit.First<Doktor>();
-
-            return doktor;
+            return upit.First();
         }
 
-        // POST: api/Doktor/DodajDoktora
+        // POST: api/Doktor/RegistrujDoktora
         [HttpPost]
-        public string DodajDoktora([FromBody] Doktor noviDoktor)
+        public string RegistrujDoktora([FromBody] Doktor noviDoktor)
         {
             this._klijent.Connect();
 
@@ -67,8 +65,10 @@ namespace BolnicaAPI.Controllers
         }
 
         //POST: api/Doktor/UlogujDoktora, podaciZaLogin = {korisnickoIme: nesto, lozinka: nestoDrugo}
+        //ne volim ovu zaobilaznicu, al ovo je za sada jedini nacin da vratim i one kodove i da vratim doktora u istom metodu
+        //jer je i string zapravo objekat, kao i doktor, a object im je natklasa, itd itd
         [HttpPost]
-        public string UlogujDoktora([FromBody] Dictionary<string, string> podaciZaLogin)
+        public object UlogujDoktora([FromBody] Dictionary<string, string> podaciZaLogin)
         {
             this._klijent.Connect();
 
@@ -86,7 +86,7 @@ namespace BolnicaAPI.Controllers
             {
                 Doktor pronadjeniDoktor = upit.First();//...and only
                 if (pronadjeniDoktor.Lozinka == prosledjenaLozinka)
-                    return "1000";//sve je u redu, i korisnik se onda loguje
+                    return pronadjeniDoktor;//sve je u redu, i korisnik se onda loguje
                 else
                     return "1002";//ispravno korisnicko ime, al neispravna lozinka
             }

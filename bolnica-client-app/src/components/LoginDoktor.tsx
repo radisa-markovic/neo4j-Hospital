@@ -35,16 +35,18 @@ class LoginDoktor extends React.Component<Props & ActionProps, State>
             <div className="col-sm-6 offset-sm-3 text-center">
                 <h1>Prijavljivanje</h1>
                 <div className="form-group">
+                    <label className="control-label">Ime:</label>
                     <input type="text" 
-                           name="ime" 
-                           placeholder="Unesi korisnicko ime" 
+                           name="korisnickoIme" 
+                           placeholder="Unesi korisničko ime" 
                            className="form-control"
                            onChange={this.onChangeInput}/>
                     {
-                        this.props.korisnickoImeJePogresno && <p style={{color: 'red'}}>Neposojeće korisničko ime</p>
+                        this.props.korisnickoImeJePogresno && <p style={{color: 'red'}}>Nepostojeće korisničko ime</p>
                     }
+                    <label className="control-label">Lozinka:</label>
                     <input type="password" 
-                           name="prezime" 
+                           name="lozinka" 
                            placeholder="Unesi lozinku" 
                            className="form-control"
                            onChange={this.onChangeInput}/>

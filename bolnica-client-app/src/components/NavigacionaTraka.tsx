@@ -1,5 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { RootStanje } from "../store";
+import { Dispatch } from "redux";
+import { OdjavaDoktora } from "../store/doktori/akcije";
+import { connect } from "react-redux";
 
 interface Props
 {
@@ -12,7 +16,7 @@ interface ActionProps
     odjavaKorisnika: Function
 }
 
-class NavigacionaTraka extends React.Component<any/*Props & ActionProps*/, any>
+class NavigacionaTraka extends React.Component<Props & ActionProps>
 {
     render(): JSX.Element
     {
@@ -37,10 +41,10 @@ class NavigacionaTraka extends React.Component<any/*Props & ActionProps*/, any>
     {
         return(
             <React.Fragment>
-                <NavLink exact to="/loginDoktor" 
+                <NavLink exact to="/unesiPacijenta" 
                          className="navbar-brand"
                          activeClassName="btn btn-outline-warning">
-                         <h3>Chat sobe</h3>
+                         <h3>Unos pacijenta</h3>
                 </NavLink>
                 <a href="/" onClick={this.odjaviKorisnika} 
                          className="navbar-brand"
@@ -78,4 +82,18 @@ class NavigacionaTraka extends React.Component<any/*Props & ActionProps*/, any>
     }
 }
 
-export default NavigacionaTraka;
+const mapStateToProps = (rootStanje: RootStanje): Props => {
+    const { doktorDetalji } = rootStanje;
+    return {
+        nekoJePrijavljen: doktorDetalji.doktorJePrijavljen,
+        usernamePrijavljenog: doktorDetalji.doktor.korisnickoIme 
+    }
+}
+
+const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
+    return {
+        odjavaKorisnika: () => dispatch(OdjavaDoktora())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavigacionaTraka);
