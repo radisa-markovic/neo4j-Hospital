@@ -1,5 +1,9 @@
 import React from "react";
 import { Doktor } from "../models/Doktor";
+import { RootStanje } from "../store";
+import { Dispatch } from "redux";
+import { RegistracijaDoktoraPokusavanje } from "../store/doktori/akcije";
+import { connect } from "react-redux";
 
 interface Props
 {
@@ -9,7 +13,7 @@ interface Props
 
 interface ActionProps
 {
-    registrujDoktora: boolean
+    registrujDoktora: (noviDoktor: Doktor) => void
 }
 
 interface State
@@ -28,28 +32,36 @@ class RegistracijaDoktor extends React.Component<Props & ActionProps, State>
             <div className="col-sm-6 offset-sm-3 text-center">
                 <h3>Napravi nalog</h3>
                 <div className="form-group">
-                    <label className="control-label">Ime:</label>
+                    <label className="control-label" style={{fontWeight: "bold"}}>Ime:</label>
                         <input type="text" 
                                 name="ime" 
                                 className="form-control" 
+                                placeholder="Unesi ime"
+                                style={{textAlign: "center"}}
                                 onChange={this.onChangeInput}/>
-                    <label className="control-label">Prezime:</label>
+                    <label className="control-label" style={{fontWeight: "bold"}}>Prezime:</label>
                         <input type="text" 
                                 name="prezime" 
                                 className="form-control" 
+                                placeholder="Unesi prezime"
+                                style={{textAlign: "center"}}
                                 onChange={this.onChangeInput}/>
-                    <label className="control-label">Korisničko ime:</label>
+                    <label className="control-label" style={{fontWeight: "bold"}}>Korisničko ime:</label>
                         <input type="korisnickoIme" 
                                 name="inputKorisnickoIme" 
-                                className="form-control" 
+                                className="form-control"
+                                placeholder="Unesi korisničko ime" 
+                                style={{textAlign: "center"}}
                                 onChange={this.onChangeInput}/>
                         {
                             this.props.korisnickoImeJeZauzeto && <p style={{color: 'red'}}>Korisničko ime je zauzeto</p>
                         }
-                    <label className="control-label">Lozinka:</label>
+                    <label className="control-label" style={{fontWeight: "bold"}}>Lozinka:</label>
                         <input type="password" 
                                 name="lozinka" 
                                 className="form-control" 
+                                placeholder="Unesi lozinku"
+                                style={{textAlign: "center"}}
                                 onChange={this.onChangeInput}/>
                 </div>
                 <div className="form-group">
@@ -75,8 +87,23 @@ class RegistracijaDoktor extends React.Component<Props & ActionProps, State>
             specijalnost: "Podesiti nekako specijalnost..."
         };
 
-        alert(`Paket paket trave`)
+        alert(`Paket paket trave \n ${noviDoktor}`);
+        this.props.registrujDoktora(noviDoktor);
     }
 }
 
-export default RegistracijaDoktor;
+const mapStateToProps = (rootStanje: RootStanje): Props => {
+    const { doktorDetalji } = rootStanje;
+    return {
+        korisnickoImeJeZauzeto: doktorDetalji.korisnickoImeJeZauzeto,
+        nekoJePrijavljen: doktorDetalji.doktorJePrijavljen
+    }
+}
+
+const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
+    return {
+        registrujDoktora: (noviDoktor: Doktor) => dispatch(RegistracijaDoktoraPokusavanje(noviDoktor))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegistracijaDoktor);

@@ -8,7 +8,6 @@ export const LoginDoktoraPokusaj = (loginDetalji: LoginDoktoraPodaci): LoginDokt
     }
 }
 
-//moram malo da doradim API da vraca doktora i da vraca ove kodove nekako
 export const LoginDoktoraUspeh = (doktor: Doktor): LoginDoktoraUspesan => {
     return {
         type: AkcijeDoktor.LOGIN_DOKTOR_USPEH,
@@ -27,6 +26,13 @@ export const LoginDoktoraLosaSifra = (): LoginDoktoraPogresnaSifra => {
     return {
         type: AkcijeDoktor.LOGIN_DOKTORA_POGRESNA_SIFRA,
         lozinkaJeLosa: true
+    }
+}
+
+export const RegistracijaDoktoraPokusavanje = (noviDoktor: Doktor): RegistracijaDoktoraPokusaj => {
+    return {
+        type: AkcijeDoktor.REGISTRACIJA_DOKTORA_POKUSAJ,
+        noviDoktor: noviDoktor
     }
 }
 

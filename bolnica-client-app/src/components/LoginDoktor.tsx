@@ -35,20 +35,22 @@ class LoginDoktor extends React.Component<Props & ActionProps, State>
             <div className="col-sm-6 offset-sm-3 text-center">
                 <h1>Prijavljivanje</h1>
                 <div className="form-group">
-                    <label className="control-label">Ime:</label>
+                    <label className="control-label" style={{fontWeight: "bold"}}>Ime:</label>
                     <input type="text" 
                            name="korisnickoIme" 
                            placeholder="Unesi korisničko ime" 
                            className="form-control"
+                           style={{textAlign: "center"}}
                            onChange={this.onChangeInput}/>
                     {
                         this.props.korisnickoImeJePogresno && <p style={{color: 'red'}}>Nepostojeće korisničko ime</p>
                     }
-                    <label className="control-label">Lozinka:</label>
+                    <label className="control-label" style={{fontWeight: "bold"}}>Lozinka:</label>
                     <input type="password" 
                            name="lozinka" 
                            placeholder="Unesi lozinku" 
                            className="form-control"
+                           style={{textAlign: "center"}}
                            onChange={this.onChangeInput}/>
                     {
                         this.props.lozinkaJePogresna && <p style={{color: 'red'}}>Pogrešna lozinka</p>
@@ -66,8 +68,8 @@ class LoginDoktor extends React.Component<Props & ActionProps, State>
         this.setState({ [event.target.name] : event.target.value} as Pick<State, any>);
     }
 
-    prijaviSe = (): void => {
-        alert(`Prijava dr ${this.state}`);
+    prijaviSe = (event: React.MouseEvent<HTMLButtonElement>): void => {
+        alert(`Prijava dr ${this.state.korisnickoIme}`);
         let loginPodaci: LoginDoktoraPodaci = {
             korisnickoIme: this.state.korisnickoIme,
             lozinka: this.state.lozinka

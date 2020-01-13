@@ -1,4 +1,15 @@
 import React from "react";
+import { Pacijent } from "../models/Pacijent";
+
+interface Props
+{
+    unosJeUspesan: boolean
+}
+
+interface ActionProps
+{
+    unesiPacijenta: (noviPacijent: Pacijent) => void
+}
 
 interface State
 {
@@ -9,7 +20,7 @@ interface State
     datumSmestanja: string
 }
 
-class UnosPacijenta extends React.Component<{}, State>
+class UnosPacijenta extends React.Component<Props & ActionProps, State>
 {
     readonly state = {
         ime: "",
@@ -91,6 +102,7 @@ class UnosPacijenta extends React.Component<{}, State>
         console.log(punDatumPrijave);
         
         alert(`Klik na dugme`);
+        //this.props.unesiPacijenta(noviPacijent);
     }
 }
 

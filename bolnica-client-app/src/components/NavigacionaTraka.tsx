@@ -21,7 +21,7 @@ class NavigacionaTraka extends React.Component<Props & ActionProps>
     render(): JSX.Element
     {
         return (
-            <nav className="navbar navbar-default">
+            <nav className="navbar navbar-default bg-dark">
                 <h4>Bolnica dr Vojislav Koštunica - Nismo obavešteni o tome ko ste, šta ste i šta vam je</h4>
                 <div className="container-fluid">
                     <div className="navbar-header">
