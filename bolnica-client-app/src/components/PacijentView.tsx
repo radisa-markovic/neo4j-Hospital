@@ -31,20 +31,25 @@ interface ActionProps
     otpustiPacijenta: (idPacijenta: string) => void
 }
 
-class Pacijent extends React.Component<Props & ActionProps, {}>
+class PacijentView extends React.Component<Props & ActionProps, {}>
 {
     render(): JSX.Element
     {
         return(
             <div className="col-sm-6 offset-sm-3 text-center">
-                <p>ID: {this.props.id}</p>
-                <p>Ime: {this.props.ime}</p>
-                <p>Prezime: {this.props.prezime}</p>
-                <p>Dijagnoza: </p>
-                <p>Datum smeštanja: {this.props.datumSmestanja}</p>
+                <p className="control-label">ID: {this.props.id}</p>
+                <p className="control-label">Ime: {this.props.ime}</p>
+                <p className="control-label">Prezime: {this.props.prezime}</p>
+                <p className="control-label">Dijagnoza: </p>
+                <p className="control-label">Datum smeštanja: {this.props.datumSmestanja}</p>
+                <div className="btn-group-vertical">
+                    <button className="btn btn-primary btn-sm">Pogledaj izveštaje</button>
+                    <button className="btn btn-warning btn-sm">Dodaj izveštaj</button>
+                    <button className="btn btn-danger btn-sm">Otpusti pacijenta</button>
+                </div>
             </div>
         );
     }
 }
 
-export default Pacijent;
+export default PacijentView;

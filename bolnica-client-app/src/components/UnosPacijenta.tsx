@@ -1,5 +1,7 @@
 import React from "react";
 import { Pacijent } from "../models/Pacijent";
+import uniqid from 'uniqid';
+import { RootStanje } from "../store";
 
 interface Props
 {
@@ -13,6 +15,7 @@ interface ActionProps
 
 interface State
 {
+    identifikacija: string,
     ime: string,
     prezime: string,
     dijagnoza: string,
@@ -22,7 +25,8 @@ interface State
 
 class UnosPacijenta extends React.Component<Props & ActionProps, State>
 {
-    readonly state = {
+    readonly state: State = {
+        identifikacija: "", 
         ime: "",
         prezime: "",
         dijagnoza: "",
@@ -100,8 +104,17 @@ class UnosPacijenta extends React.Component<Props & ActionProps, State>
 
         let punDatumPrijave: string = `${dan}-${mesec}-${godina}`;
         console.log(punDatumPrijave);
+
+        let noviPacijent: Pacijent = {
+            identifikacija: uniqid("pacijent-"),
+            ime: this.state.ime,
+            prezime: this.state.prezime,
+            dijagnoza: this.state.dijagnoza,
+            datumSmestanja: punDatumPrijave
+        };
         
         alert(`Klik na dugme`);
+        console.log(noviPacijent);
         //this.props.unesiPacijenta(noviPacijent);
     }
 }

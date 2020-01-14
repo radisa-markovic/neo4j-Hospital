@@ -1,5 +1,6 @@
 export interface Pacijent
 {
+    identifikacija: string,
     ime: string,
     prezime: string,
     dijagnoza: string, //ili odeljenje, videcu, samo je sad fora sto ne znam jos uvek kako da predstavim veze

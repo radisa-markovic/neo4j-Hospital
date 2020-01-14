@@ -5,6 +5,8 @@ import LoginDoktor from './components/LoginDoktor';
 import NavigacionaTraka from './components/NavigacionaTraka';
 import HomePage from './components/Home';
 import RegistracijaDoktor from './components/RegistracijaDoktor';
+import UnosIzvestaja from './components/UnosIzvestaja';
+import PacijentView from './components/PacijentView';
 
 const App: React.FC = () => {
   return (
@@ -16,6 +18,8 @@ const App: React.FC = () => {
           <Route exact path="/loginDoktor" component={LoginDoktor} />
           <Route exact path="/registracijaDoktor" component={RegistracijaDoktor} />
           <Route exact path="/unesiPacijenta" component={UnosPacijenta} />
+          <Route exact path="/unesiIzvestaj" component={UnosIzvestaja} />
+          <Route exact path="/pacijentView" component={PacijentView} />
         </Switch>
       </BrowserRouter>
     </React.Fragment>

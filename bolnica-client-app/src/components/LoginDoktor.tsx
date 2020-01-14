@@ -76,6 +76,7 @@ class LoginDoktor extends React.Component<Props & ActionProps, State>
         };
 
         console.log(loginPodaci);
+       
 
         this.props.ulogujDoktora(loginPodaci);
     }

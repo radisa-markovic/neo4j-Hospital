@@ -46,6 +46,11 @@ class NavigacionaTraka extends React.Component<Props & ActionProps>
                          activeClassName="btn btn-outline-warning">
                          <h3>Unos pacijenta</h3>
                 </NavLink>
+                <NavLink exact to="/unesiIzvestaj" 
+                         className="navbar-brand"
+                         activeClassName="btn btn-outline-warning">
+                         <h3>Unos pacijenta</h3>
+                </NavLink>
                 <a href="/" onClick={this.odjaviKorisnika} 
                          className="navbar-brand"
                          >
