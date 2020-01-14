@@ -29,7 +29,7 @@ namespace BolnicaAPI.Controllers
 
         // GET: api/Pacijent/DetaljiOPacijentu/idPacijenta
         [HttpGet("{idPacijenta}")]
-        public Pacijent VratiDetaljeOPacijentu(string idPacijenta)
+        public Pacijent DetaljiOPacijentu(string idPacijenta)
         {
             this._klijent.Connect();
             var upit = this._klijent.Cypher
@@ -52,18 +52,21 @@ namespace BolnicaAPI.Controllers
             //---->> za sada ovo ne vraca nista, a ako zatreba lako cu da dodam neke stvari
         }
 
-        // DELETE: api/Pacijent/ObrisiPacijenta/idPacijenta
+        //----->> sta je ovde fora: pacijent ima nekoliko veza(nalazi_se_na, ceka), i objekte koji su vezani za njega(izvestaj)
+        //---->> pa ja, ako zelim da otpustim pacijenta, moram da mu obrisem izvestaje, da mu uklonim veze, i na kraju i njega samog
+        // DELETE: api/Pacijent/OtpustiPacijenta/idPacijenta
         [HttpDelete ("{idPacijenta}")]
         public void ObrisiPacijenta(string idPacijenta)
         {
             this._klijent.Connect();
             this._klijent.Cypher
-                         .Match("(pacijent: Pacijent)")
+                         .Match("(pacijent: Pacijent)-[:POSEDUJE]->(izvestaji:Izvestaj)")
                          .Where((Pacijent pacijent) => pacijent.Identifikacija == idPacijenta)
-                         .Delete("pacijent")
+                         .Delete("izvestaji")
+                         .DetachDelete("pacijent")
                          .ExecuteWithoutResults();
             //nek bude da ne vraca nista, to se lako moze promeniti
-            //--->> takodje je fora kako da uklonim veze koje pacijent moze da ima sa nekima, tipa izabrani lekar i tako to
+            //--->>zbog niza delete-detach delete, moram da proverim da li ovo radi
         }
     }
 }

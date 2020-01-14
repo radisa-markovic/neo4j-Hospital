@@ -30,6 +30,8 @@ namespace BolnicaAPI.Controllers
             return "value";
         }
 
+
+        //---->> ne moram da vodim racuna ni o kakvoj unikatnosti, jer ne moze da se desi duplikat po id-u, tako kaze onaj sa npm-a
         // POST: api/Izvestaj/DodajIzvestaj
         //---->> nista, ovo je dodalo izvestaj, i vezalo ga je za pacijenta, sad cu ja da vidim sta mogu sa time
         //--->> sad trebam da napravim situaciju da doktor moze da napise izvestaj za nekog pacijenta
@@ -37,18 +39,21 @@ namespace BolnicaAPI.Controllers
         [HttpPost]
         public void DodajIzvestaj([FromBody] Izvestaj noviIzvestaj)
         {
+            //this._klijent.Connect();
+            //this._klijent.Cypher
+            //             .Create("(izvestaj: Izvestaj {noviIzvestaj})")
+            //             .WithParam("noviIzvestaj", noviIzvestaj)
+            //             .ExecuteWithoutResults();//ovo ovde do sada treba da doda jedan izvestaj, a posle cu da pravim veze...
+
+            //da vidim dal moze ovako sa 3 ugnjezdena upita i onaj With
             this._klijent.Connect();
             this._klijent.Cypher
-                         .Create("(izvestaj: Izvestaj {noviIzvestaj})")
-                         .WithParam("noviIzvestaj", noviIzvestaj)
-                         .ExecuteWithoutResults();//ovo ovde do sada treba da doda jedan izvestaj, a posle cu da pravim veze...
-
-            this._klijent.Cypher
-                         .Match("(pacijent:Pacijent)", "(izvestaj:Izvestaj)", "(doktor:Doktor)")
-                         .Where((Pacijent pacijent) => pacijent.Identifikacija == noviIzvestaj.IdPacijenta)
-                         .AndWhere((Izvestaj izvestaj) => izvestaj.Identifikator == noviIzvestaj.Identifikator)
-                         .AndWhere((Doktor doktor) => doktor.Ime == noviIzvestaj.ImeDoktora)
-                         .CreateUnique("(pacijent)-[:POSEDUJE]->(izvestaj)<-[:NAPISAO]-(doktor)")
+                         .Merge($"(pacijent:Pacijent {{idPacijenta: \"{noviIzvestaj.IdPacijenta}\"}})")
+                         .With("pacijent")
+                         .Merge($"(izvestaj:Izvestaj {{noviIzvestaj: \"{noviIzvestaj}\"}})")
+                         .With("pacijent, izvestaj")
+                         .Merge($"(doktor:Doktor {{Ime: \"{noviIzvestaj.ImeDoktora}\"}})")
+                         .Merge("(pacijent)-[:POSEDUJE]->(izvestaj)<-[:NAPISAO]-(doktor)")
                          .ExecuteWithoutResults();
         }
 
