@@ -14,6 +14,7 @@ namespace BolnicaAPI.Controllers
     public class PacijentController : ControllerBase
     {
         private GraphClient _klijent = new GraphClient(new Uri("http://localhost:7474/db/data"), "neo4j", "bolnica");
+        
         // GET: api/Pacijent/Pacijenti
         [HttpGet]
         public IEnumerable<Pacijent> Pacijenti()
@@ -51,14 +52,13 @@ namespace BolnicaAPI.Controllers
             //---->> za sada ovo ne vraca nista, a ako zatreba lako cu da dodam neke stvari
         }
 
-        // DELETE: api/Pacijent/OtpustiPacijenta/idPacijenta
+        // DELETE: api/Pacijent/OtpustiPacijenta/idPacijenta, DetachDelete pokriva sve odlazece veze
         [HttpDelete ("{idPacijenta}")]
         public void OtpustiPacijenta(string idPacijenta)
         {
             this._klijent.Connect();
             this._klijent.Cypher
-                         .Match($"(pacijent: Pacijent {{idPacijenta:\"{idPacijenta}\"}})-[:POSEDUJE]->(izvestaji:Izvestaj)")
-                         .DetachDelete("izvestaji")
+                         .Match($"(pacijent: Pacijent {{idPacijenta:\"{idPacijenta}\"}})")
                          .DetachDelete("pacijent")
                          .ExecuteWithoutResults();
         }
