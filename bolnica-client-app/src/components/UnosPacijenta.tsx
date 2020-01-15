@@ -106,10 +106,10 @@ class UnosPacijenta extends React.Component<Props & ActionProps, State>
         console.log(punDatumPrijave);
 
         let noviPacijent: Pacijent = {
-            identifikacija: uniqid("pacijent-"),
+            IDPacijenta: uniqid("pacijent-"),
             ime: this.state.ime,
             prezime: this.state.prezime,
-            dijagnoza: this.state.dijagnoza,
+            odeljenje: this.state.dijagnoza,
             datumSmestanja: punDatumPrijave
         };
         
