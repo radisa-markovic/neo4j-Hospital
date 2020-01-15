@@ -40,27 +40,5 @@ namespace BolnicaAPI.Controllers
             return upit.First(); 
         }
 
-        // POST: api/Pacijent/DodajPacijenta, ovo ne bi trebalo nikad da ne uspe, mozda posle doduse ako ubacim neki constraint..
-        [HttpPost]
-        public void DodajPacijenta([FromBody] Pacijent noviPacijent)
-        {
-            this._klijent.Connect();
-            this._klijent.Cypher
-                         .Create("(pacijent: Pacijent {noviPacijent})")
-                         .WithParam("noviPacijent", noviPacijent)
-                         .ExecuteWithoutResults();
-            //---->> za sada ovo ne vraca nista, a ako zatreba lako cu da dodam neke stvari
-        }
-
-        // DELETE: api/Pacijent/OtpustiPacijenta/idPacijenta, DetachDelete pokriva sve odlazece veze
-        [HttpDelete ("{idPacijenta}")]
-        public void OtpustiPacijenta(string idPacijenta)
-        {
-            this._klijent.Connect();
-            this._klijent.Cypher
-                         .Match($"(pacijent: Pacijent {{idPacijenta:\"{idPacijenta}\"}})")
-                         .DetachDelete("pacijent")
-                         .ExecuteWithoutResults();
-        }
     }
 }

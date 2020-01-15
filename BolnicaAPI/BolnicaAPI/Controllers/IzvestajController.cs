@@ -15,8 +15,6 @@ namespace BolnicaAPI.Controllers
     {
         private GraphClient _klijent = new GraphClient(new Uri("http://localhost:7474/db/data"), "neo4j", "bolnica");
 
-        //-->>opet cu da "varam" i vratim object, jer pacijent mozda nema izvestaje, pa nek bude da vraca onaj kod 1001
-        //---<< Models ima los naziv, bolji naziv je ModeliSaFrontEnda
         // GET: api/Izvestaj/VratiPacijentoveIzvestaje/{idPacijenta}
         [HttpGet("{idPacijenta}")]
         public object VratiPacijentoveIzvestaje(string idPacijenta)
@@ -34,12 +32,6 @@ namespace BolnicaAPI.Controllers
                                         izvestaj.As<Izvestaj>().DatumPisanja
                                     })
                                     .Results;
-            var StaLiSamDobio = upit.ToList();//dobijam listu sa dva elementa, prvi je ovde korisnicko ime(tako sam naveo), drugi je izvestaj
-           //korisnickoIme doktora iz veze dobijam odvojeno od izvestaja, moracu na frontend da ga krpim, ili da ovde prespajam..
-           //..tako nesto slicno
-
-            //---->>> a mozda je greska u meni, tj mozda drugacije trebam da saljem podatke, cak i da izbacim tudje reference kompletno?
-            //--->> aj da vidim sta kaze net
             if (upit.Count() == 0)
                 return "1001";//nema izvestaja
             else
