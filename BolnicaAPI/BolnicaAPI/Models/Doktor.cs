@@ -10,7 +10,7 @@ namespace BolnicaAPI.Models
         public string Ime { get; set; }
         public string Prezime { get; set; }
         public string Specijalnost { get; set; }
-        public string KorisnickoIme { get; set; }
+        public string KorisnickoIme { get; set; } //ovo ce da bude identifikator ovom cvoru
         public string Lozinka { get; set; }
 
     }

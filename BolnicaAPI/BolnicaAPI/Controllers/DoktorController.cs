@@ -11,21 +11,19 @@ namespace BolnicaAPI.Controllers
     [ApiController]
     public class DoktorController : ControllerBase
     {
-        //stavljam sve ovde jer ne znam kako da odradim Dependency Injection, a i ako radi, nek ide...
         private GraphClient _klijent = new GraphClient(new Uri("http://localhost:7474/db/data"), "neo4j", "bolnica");
+     
         // GET: api/Doktor/VratiDoktore
         [HttpGet]
         public IEnumerable<Doktor> VratiDoktore()
         {
-            this._klijent.Connect();//kapiram da je ruzno, al za sada nek radi, kad bude vreme cu da se ucim i DI-ja i tako toga
+            this._klijent.Connect();
             var query = this._klijent.Cypher
                                      .Match("(doktor: Doktor)")
-                                     .Return(doktor => doktor.As<Doktor>())//ovo mora da se poklapa sa ovim iznad izgleda
+                                     .Return(doktor => doktor.As<Doktor>())
                                      .Results;
 
-            List<Doktor> doktori = query.ToList();
-            
-            return doktori;
+            return query.ToList();
         }
 
         // GET: api/Doktor/VratiJednogDoktora/korisnickoIme
@@ -65,8 +63,6 @@ namespace BolnicaAPI.Controllers
         }
 
         //POST: api/Doktor/UlogujDoktora, podaciZaLogin = {korisnickoIme: nesto, lozinka: nestoDrugo}
-        //ne volim ovu zaobilaznicu, al ovo je za sada jedini nacin da vratim i one kodove i da vratim doktora u istom metodu
-        //jer je i string zapravo objekat, kao i doktor, a object im je natklasa, itd itd
         [HttpPost]
         public object UlogujDoktora([FromBody] Dictionary<string, string> podaciZaLogin)
         {

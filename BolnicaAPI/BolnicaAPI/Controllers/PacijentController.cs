@@ -23,18 +23,17 @@ namespace BolnicaAPI.Controllers
                                     .Match("(pacijent: Pacijent)")
                                     .Return(pacijent => pacijent.As<Pacijent>())
                                     .Results;
-            List<Pacijent> pacijenti = upit.ToList();
-            return pacijenti;
+            return upit.ToList();
         }
 
-        // GET: api/Pacijent/DetaljiOPacijentu/idPacijenta
+        // GET: api/Pacijent/PodaciOPacijentu/idPacijenta
         [HttpGet("{idPacijenta}")]
-        public Pacijent DetaljiOPacijentu(string idPacijenta)
+        public Pacijent PodaciOPacijentu(string idPacijenta)
         {
             this._klijent.Connect();
             var upit = this._klijent.Cypher
                                     .Match("(pacijent: Pacijent)")
-                                    .Where((Pacijent pacijent) => pacijent.Identifikacija == idPacijenta)
+                                    .Where((Pacijent pacijent) => pacijent.IDPacijenta == idPacijenta)
                                     .Return(pacijent => pacijent.As<Pacijent>())
                                     .Results;
             return upit.First(); 
@@ -52,21 +51,16 @@ namespace BolnicaAPI.Controllers
             //---->> za sada ovo ne vraca nista, a ako zatreba lako cu da dodam neke stvari
         }
 
-        //----->> sta je ovde fora: pacijent ima nekoliko veza(nalazi_se_na, ceka), i objekte koji su vezani za njega(izvestaj)
-        //---->> pa ja, ako zelim da otpustim pacijenta, moram da mu obrisem izvestaje, da mu uklonim veze, i na kraju i njega samog
         // DELETE: api/Pacijent/OtpustiPacijenta/idPacijenta
         [HttpDelete ("{idPacijenta}")]
-        public void ObrisiPacijenta(string idPacijenta)
+        public void OtpustiPacijenta(string idPacijenta)
         {
             this._klijent.Connect();
             this._klijent.Cypher
-                         .Match("(pacijent: Pacijent)-[:POSEDUJE]->(izvestaji:Izvestaj)")
-                         .Where((Pacijent pacijent) => pacijent.Identifikacija == idPacijenta)
-                         .Delete("izvestaji")
+                         .Match($"(pacijent: Pacijent {{idPacijenta:\"{idPacijenta}\"}})-[:POSEDUJE]->(izvestaji:Izvestaj)")
+                         .DetachDelete("izvestaji")
                          .DetachDelete("pacijent")
                          .ExecuteWithoutResults();
-            //nek bude da ne vraca nista, to se lako moze promeniti
-            //--->>zbog niza delete-detach delete, moram da proverim da li ovo radi
         }
     }
 }
