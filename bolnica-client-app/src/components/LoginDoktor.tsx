@@ -6,11 +6,14 @@ import { LoginDoktoraPokusaj } from "../store/doktori/akcije";
 import { RootStanje } from "../store";
 import { Redirect } from "react-router-dom";
 
+import vojaSrecan from '../slikeZaHome/VojaSrecan.jpg'
+
 interface Props
 {
     korisnickoImeJePogresno: boolean,
     lozinkaJePogresna: boolean,
-    prijavaJeUspela: boolean
+    prijavaJeUspela: boolean,
+    prijavaSeObradjuje: boolean
 }
 
 interface ActionProps
@@ -40,6 +43,9 @@ class LoginDoktor extends React.Component<Props & ActionProps, State>
         return(
             <div className="col-sm-6 offset-sm-3 text-center">
                 <h1>Prijavljivanje</h1>
+                {
+                    this.props.prijavaSeObradjuje && this.renderujLoading() 
+                }
                 <div className="form-group">
                     <label className="control-label" style={{fontWeight: "bold"}}>Ime:</label>
                     <input type="text" 
@@ -62,7 +68,8 @@ class LoginDoktor extends React.Component<Props & ActionProps, State>
                         this.props.lozinkaJePogresna && <p style={{color: 'red'}}>Pogrešna lozinka</p>
                     }
                     <button className="btn btn-primary btn-lg"
-                            onClick={this.prijaviSe}>
+                            onClick={this.prijaviSe}
+                            disabled={this.props.prijavaSeObradjuje}>
                         Prijavi se
                     </button>
                 </div>
@@ -82,6 +89,16 @@ class LoginDoktor extends React.Component<Props & ActionProps, State>
 
         this.props.ulogujDoktora(loginPodaci);
     }
+
+    renderujLoading(): JSX.Element
+    {
+        return (
+            <React.Fragment>
+                <h3 className="col-sm-6 offset-sm-3 text-center border">PRIJAVA SE OBRAĐUJE...</h3>
+                <img src={vojaSrecan} alt="Nema slike" className="col-sm-18 offset-sm-1 text-center"/>
+            </React.Fragment>
+        );
+    }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
@@ -95,7 +112,8 @@ const mapStateToProps = (rootStanje: RootStanje): Props => {
     return {
         korisnickoImeJePogresno: doktorDetalji.korisnickoImeNePostoji,
         lozinkaJePogresna: doktorDetalji.lozinkaJePogresna,
-        prijavaJeUspela: doktorDetalji.doktorJePrijavljen
+        prijavaJeUspela: doktorDetalji.doktorJePrijavljen,
+        prijavaSeObradjuje: doktorDetalji.prijavaSeObradjuje
     }
 }
 

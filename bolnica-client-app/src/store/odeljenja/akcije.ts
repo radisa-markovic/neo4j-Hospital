@@ -1,4 +1,4 @@
-import { DodavanjePacijenta, OtpustanjePacijenta, UcitavanjeOdeljenjaIzBaze, ProsledjivanjeOdeljenjaUReducer } from "../odeljenja/model";
+import { DodavanjePacijenta, OtpustanjePacijenta, UcitavanjeOdeljenjaIzBaze, ProsledjivanjeOdeljenjaUReducer, ProslediPraznoOdeljenjeUReducer, VratiStatuseNaPocetno } from "../odeljenja/model";
 import { Pacijent } from "../../models/Pacijent";
 import { AkcijeOdeljenja } from "./model";
 
@@ -27,5 +27,17 @@ export const ProslediOdeljenjeReduceru = (pacijenti: Pacijent[]): Prosledjivanje
     return {
         type: AkcijeOdeljenja.PROSLEDI_ODELJENJE_U_REDUCER,
         pacijenti: pacijenti
+    }
+}
+
+export const ProslediPraznoOdeljenjeAkcija = (): ProslediPraznoOdeljenjeUReducer => {
+    return {
+        type: AkcijeOdeljenja.PROSLEDI_PRAZNO_ODELJENJE_U_REDUCER
+    }
+}
+
+export const VratiStatuseNaPocetnoAkcija = (): VratiStatuseNaPocetno => {
+    return {
+        type: AkcijeOdeljenja.VRATI_STATUSE_NA_POCETNO
     }
 }

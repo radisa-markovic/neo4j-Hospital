@@ -23,7 +23,6 @@ function* ucitajIzvestaje(akcija: VracanjeIzvestajaPacijenta)
     const pacijentoviIzvestaji: any = yield uputiZahtevKaBazi("GET", 
                                                    `${IzvestajiOsnovniURL}/VratiPacijentoveIzvestaje/${IDPacijenta}`); 
     
-    console.log(pacijentoviIzvestaji);
     if(pacijentoviIzvestaji === 1001)
         yield saga.put(ProsledjivanjeIzvestajaGreska())
     else
@@ -54,8 +53,7 @@ function* uputiZahtevKaBazi(metoda: string, URL: string, podaci?: any)//podaci s
 
     let ishodFetcha = yield fetch(URL, HTTPZahtev);
     
-    //------>> ovo mozda moze i da se promeni, malo sam umoran da ga stelujem, al ono, nek se nadje kao napomena
-    if(metoda !== "POST" && metoda !== "DELETE") //novo krpljenje 
+    if(metoda !== "POST" && metoda !== "DELETE")
         return yield ishodFetcha.json();
     else
         return ishodFetcha.status.toString();

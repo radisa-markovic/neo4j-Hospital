@@ -85,7 +85,19 @@ class UnosPacijenta extends React.Component<Props & ActionProps, State>
     }
 
     potvrdiPacijenta = (): void => {
-        //this.setState({ datumSmestanja: new Date() })
+
+        let noviPacijent: Pacijent = {
+            idPacijenta: uniqid("pacijent-"),
+            ime: this.state.ime,
+            prezime: this.state.prezime,
+            odeljenje: this.state.odeljenje,
+            datumSmestanja: this.regulisiDatum()
+        };
+        
+        this.props.unesiPacijenta(noviPacijent);
+    }
+
+    regulisiDatum = (): string => {
         let danasnjiDatum = new Date();
         let dan = danasnjiDatum.getDate().toString();
         let mesec = (danasnjiDatum.getMonth() + 1).toString();
@@ -97,19 +109,7 @@ class UnosPacijenta extends React.Component<Props & ActionProps, State>
         if(parseInt(mesec) < 10)
             mesec = '0' + mesec;
 
-        let punDatumPrijave: string = `${dan}-${mesec}-${godina}`;
-        console.log(punDatumPrijave);
-
-        let noviPacijent: Pacijent = {
-            idPacijenta: uniqid("pacijent-"),
-            ime: this.state.ime,
-            prezime: this.state.prezime,
-            odeljenje: this.state.odeljenje,
-            datumSmestanja: punDatumPrijave
-        };
-        
-        console.log(noviPacijent);
-        this.props.unesiPacijenta(noviPacijent);
+        return `${dan}-${mesec}-${godina}`;
     }
 }
 

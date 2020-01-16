@@ -48,8 +48,6 @@ namespace BolnicaAPI.Controllers
         }
 
         // POST: api/Odeljenje/DodajPacijenta
-        //---->> iz one forme za dodavanje pacijenta se naziv odeljenja izvlaci iz onog select-a, i to cu da hardkodujem...
-        //...--->> jer sam kratak sa vremenom, sto automatski znaci da su odeljenja unikatna
         [HttpPost]
         public void DodajPacijenta([FromBody] Pacijent noviPacijent)
         {
@@ -85,13 +83,5 @@ namespace BolnicaAPI.Controllers
                          .ExecuteWithoutResults();
         }
 
-        /*
-         MATCH (poi:PointOfInterest)
-         WHERE poi.id = "X0007"
-         WITH poi
-         OPTIONAL MATCH (poi)-[r]-(allRelatedNodes)
-         WHERE size((allRelatedNodes)--()) = 1    
-         DETACH DELETE poi, allRelatedNodes
-         */
     }
 }

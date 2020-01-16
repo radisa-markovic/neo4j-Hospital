@@ -7,21 +7,6 @@ import { RouteComponentProps } from "react-router-dom";
 import uniqid from 'uniqid';
 import { RootStanje } from "../store";
 
-//ovo treba da bude vezano za pacijenta, i da na klik izlistam stranicu gde su pacijentovi izvestaji
-
-//izvestaj forma treba da bude otprilike ovakvog sadrzaja:
-/*
-    idIzvestaja: {nesto sto se nekako samo generise} readonly autogen
-    Ime pacijenta: {imePacijenta} //provaliti kako da se proslede pacijenti i kako napisati reducer za njih
-    Prezime pacijenta: {prezimePacijenta}
-    Odeljenje pacijenta: {odeljenjePacijenta} 
-    DijagnozaPacijenta: {dijagnozaPacijenta}
-    izvestaj napisao: {prijavljeni doktor u tom trenutku} readonly iz reducera
-*/
-
-//ovo je idealno da se izvuce iz one graf baze nekako, posto ovo mogu da vezem i za doktora (NAPISAO)..
-//..i za pacijenta (POSEDUJE)
-
 interface Props
 {
     korisnickoImeDoktora: string
@@ -43,11 +28,6 @@ type KompletanProps = Props & ActionProps & RouteComponentProps<{IDPacijenta: st
 //Odeljenja/:Naziv/:IDPacijenta
 class UnosIzvestaja extends React.Component<KompletanProps, State>
 {
-    componentDidMount(): void
-    {
-        console.log(this.props.match.params.IDPacijenta);
-    }
-
     render(): JSX.Element
     {
         return(
@@ -74,17 +54,16 @@ class UnosIzvestaja extends React.Component<KompletanProps, State>
 
     podnesiIzvestaj = (event: React.MouseEvent<HTMLButtonElement>): void => {
         let noviIzvestaj: Izvestaj = {
-            KorisnickoImeDoktora: this.props.korisnickoImeDoktora,
+            korisnickoImeDoktora: this.props.korisnickoImeDoktora,
             idPacijenta: this.props.match.params.IDPacijenta,
-            IDIzvestaja: uniqid("izvestaj-"),
+            idIzvestaja: uniqid("izvestaj-"),
             datumPisanja: this.vratiDatumPisanja(),
             sadrzaj: this.state.novaDijagnoza
         };
 
-        console.log(noviIzvestaj);
         this.props.potvrdiIzvestaj(noviIzvestaj);
         alert(`Uspesno dodat izvestaj`);
-        this.props.history.push("/Odeljenja");//da vidim dal hoce da radi
+        this.props.history.push("/Odeljenja");
     }
 
     vratiDatumPisanja = (): string => {

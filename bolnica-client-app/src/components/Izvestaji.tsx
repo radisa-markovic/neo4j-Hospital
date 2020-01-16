@@ -1,6 +1,6 @@
 import React from "react";
 import { Izvestaj } from "../models/Izvestaj";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, Link } from "react-router-dom";
 import { RootStanje } from "../store";
 import { connect } from "react-redux";
 import IzvestajView from "./IzvestajView";
@@ -9,9 +9,6 @@ import { VratiPacijentoveIzvestaje, ResetujStatuseAkcija } from "../store/izvest
 
 import vojaKalas from '../slikeZaHome/VojaKalas.jpg'
 
-//sadrzi listu svih izvestajKomponenti..
-
-//ovo se nalazi na /vratiIzvestaje/:IDPacijenta
 interface Props
 {
     izvestaji: Izvestaj[],
@@ -22,15 +19,13 @@ interface Props
 interface ActionProps
 {
     ucitajPacijentoveIzvestaje: (IDPacijenta: string) => void,
-    povratakUOdeljenje: () => void //ovo mora da vrati reducer za izvestaje na pocetne stvari
+    povratakUOdeljenje: () => void 
 }
 
 class Izvestaji extends React.Component<Props & ActionProps & RouteComponentProps<{IDPacijenta: string}>, {}>
 {
     componentDidMount(): void
     {
-        console.log(this.props.izvestaji);
-        console.log(this.props.izvestajiSuUcitani);
         if(!this.props.izvestajiSuUcitani)
             this.props.ucitajPacijentoveIzvestaje(this.props.match.params.IDPacijenta);
     }
@@ -49,6 +44,9 @@ class Izvestaji extends React.Component<Props & ActionProps & RouteComponentProp
             <div>
                 <h1 className="col-sm-6 offset-sm-3 text-center border">
                     Izvestaji pacijenta: {this.props.match.params.IDPacijenta}
+                </h1>
+                <h1 className="col-sm-6 offset-sm-3 text-center border">
+                     <Link to="/Odeljenja">Nazad u odeljenja</Link> 
                 </h1>
                 {
                     this.props.izvestajiPostoje === true?
@@ -84,7 +82,7 @@ const mapStateToProps = (rootStanje: RootStanje): Props => {
 const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
     return {
         ucitajPacijentoveIzvestaje: (IDPacijenta: string) => dispatch(VratiPacijentoveIzvestaje(IDPacijenta)),
-        povratakUOdeljenje: () => dispatch(ResetujStatuseAkcija())//zbog ovoga nece da dispecuje gore
+        povratakUOdeljenje: () => dispatch(ResetujStatuseAkcija())
     }
 }
 

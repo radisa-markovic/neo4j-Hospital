@@ -5,23 +5,6 @@ import { OtpustiPacijenta } from "../store/odeljenja/akcije";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-//------->> ovo se sad moze nalaziti unutar neke druge komponente koja sadrzi sve te pacijente,
-//---->> pa onda se tu ovaj djavo prikaze (znaci nova ruta i novi link ka toj ruti)
-
-/*
-    Ovo ce da ima sledeci izgled:
-    idPacijenta: {idPacijenta}
-    imePacijenta: {imePacijenta}
-    prezimePacijenta: {prezimePacijenta}
-    dijagnoza(odeljenje, bem ga): {dijagnoza/odeljenje}
-    datumSmestanja: {datumSmestanja}
-
-    prikaziDosadasnjeIzvestaje(), //<<--- treba da otvori neku listu i da izlista pojedinacne izvestaje 
-    (prezentaciona komponenta koja "ne zna" za redux)
-    dodajNoviIzvestaj(), //<<--- otvara onu IzvestajFormu i njoj preko parametara rute prosledjuje id, ime,..
-    ..prezime (datum se sam generise u trenutku pisanja)
-    otpustiPacijenta() //<<---- ovo i ono iznad ima neke fore sa akrobacijama oko graf baze, upita i brisanja
-*/
 interface Props
 {
     pacijent: Pacijent,
@@ -67,12 +50,7 @@ class PacijentView extends React.Component<Props & ActionProps, {}>
     otpustiPacijenta = (): void => {
         this.props.otpustiPacijenta(this.props.pacijent.idPacijenta);//da vidim dal je toliko prosto....
     }
-
-    dodajIzvestaj = (): void => {
-        //ideja je da ovde prvo opalim akciju koja ce da upise pacijenta u reducer za pacijenta "na obradi"
-        //(koji cu da napravim), pa da preko history.push({negde}) ucitam onu komponentu koja ce istog pacijenta
-        //...da pokupi iz reducera
-    }
+    
 }
 
 const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {

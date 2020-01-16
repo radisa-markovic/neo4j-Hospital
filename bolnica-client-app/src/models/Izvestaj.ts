@@ -1,8 +1,8 @@
 export interface Izvestaj
 {
-    IDIzvestaja: string,
+    idIzvestaja: string,
     idPacijenta: string,
-    KorisnickoImeDoktora: string //doktora koji je to napisao...
+    korisnickoImeDoktora: string //doktora koji je to napisao...
     sadrzaj: string,
     datumPisanja: string //u onom formatu DD-MM-GGGG
 }

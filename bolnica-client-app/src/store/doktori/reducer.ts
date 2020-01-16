@@ -1,10 +1,11 @@
 import { Doktor } from "../../models/Doktor";
 import { Action } from "redux";
-import { AkcijeDoktor, LoginDoktoraUspesan, LoginDoktoraPogresanUsername, LoginDoktoraPogresnaSifra, RegistracijaDoktoraUspeh, RegistracijaDoktoraZauzetUsername } from "./model";
+import { AkcijeDoktor, LoginDoktoraUspesan, LoginDoktoraPogresanUsername, LoginDoktoraPogresnaSifra, RegistracijaDoktoraUspeh, RegistracijaDoktoraZauzetUsername, LoginDoktoraProba } from "./model";
 
 export interface DoktorStanje
 {
-    doktor: Doktor
+    doktor: Doktor,
+    prijavaSeObradjuje: boolean,
     doktorJePrijavljen: boolean,
     korisnickoImeJeZauzeto: boolean,
     korisnickoImeNePostoji: boolean,
@@ -19,6 +20,7 @@ const pocetnoStanje: DoktorStanje = {
         korisnickoIme: '',
         lozinka: ''
     },
+    prijavaSeObradjuje: false,
     doktorJePrijavljen: false,
     korisnickoImeJeZauzeto: false,
     korisnickoImeNePostoji: false,
@@ -29,16 +31,33 @@ export default function reducer(stanje: DoktorStanje = pocetnoStanje, akcija: Ac
 {
     switch(akcija.type)
     {
+        case AkcijeDoktor.LOGIN_DOKTORA_POKUSAJ:
+        {
+            return {
+                ...stanje,
+                prijavaSeObradjuje: true
+            }
+        }
+
+        case AkcijeDoktor.REGISTRACIJA_DOKTORA_POKUSAJ:
+        {
+            return {
+                ...stanje,
+                prijavaSeObradjuje: true
+            }
+        }
+
         case AkcijeDoktor.LOGIN_DOKTOR_USPEH:
         {
             const { doktor } = akcija as LoginDoktoraUspesan;
             return {
                 ...stanje,
                 doktor: doktor,
+                prijavaSeObradjuje: false,
                 doktorJePrijavljen: true,
                 korisnickoImeJeZauzeto: false,
                 korisnickoImeNePostoji: false,
-                lozinkaJePogresna: false
+                lozinkaJePogresna: false,
             }
         }
         
@@ -48,8 +67,8 @@ export default function reducer(stanje: DoktorStanje = pocetnoStanje, akcija: Ac
             return {
                 ...stanje,
                 korisnickoImeNePostoji: usernameJeLos,
-                lozinkaJePogresna: false //-->> logika: dva atributa iznad se medjusobno ponistavaju, jer..
-                //..jos kao ne znam dal taj username sto neko unosi nema odgovarajucu sifru
+                prijavaSeObradjuje: false,
+                lozinkaJePogresna: false 
             }
         }
 
@@ -59,6 +78,7 @@ export default function reducer(stanje: DoktorStanje = pocetnoStanje, akcija: Ac
             return {
                 ...stanje,
                 korisnickoImeNePostoji: false,
+                prijavaSeObradjuje: false,
                 lozinkaJePogresna: lozinkaJeLosa
             }
         }
@@ -70,6 +90,7 @@ export default function reducer(stanje: DoktorStanje = pocetnoStanje, akcija: Ac
                 ...stanje,
                 doktor: doktor,
                 doktorJePrijavljen: true,
+                prijavaSeObradjuje: false,
                 korisnickoImeJeZauzeto: false,
                 korisnickoImeNePostoji: false,
                 lozinkaJePogresna: false
@@ -81,6 +102,7 @@ export default function reducer(stanje: DoktorStanje = pocetnoStanje, akcija: Ac
             const { usernameJeZauzet } = akcija as RegistracijaDoktoraZauzetUsername;
             return {
                 ...stanje,
+                prijavaSeObradjuje: false,
                 korisnickoImeJeZauzeto: usernameJeZauzet
             }
         }
@@ -97,6 +119,7 @@ export default function reducer(stanje: DoktorStanje = pocetnoStanje, akcija: Ac
                     lozinka: ''
                 },
                 doktorJePrijavljen: false,
+                prijavaSeObradjuje: false,
                 korisnickoImeJeZauzeto: false,
                 korisnickoImeNePostoji: false,
                 lozinkaJePogresna: false

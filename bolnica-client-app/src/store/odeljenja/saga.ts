@@ -1,6 +1,6 @@
 import * as saga from 'redux-saga/effects';
 import { AkcijeOdeljenja, UcitavanjeOdeljenjaIzBaze, DodavanjePacijenta, OtpustanjePacijenta } from './model';
-import { ProslediOdeljenjeReduceru } from './akcije';
+import { ProslediOdeljenjeReduceru, ProslediPraznoOdeljenjeAkcija } from './akcije';
 import { Pacijent } from '../../models/Pacijent';
 
 const OdeljenjeOsnovniURL: string = "https://localhost:44389/api/Odeljenje";
@@ -21,19 +21,19 @@ function* ucitajOdeljenje(akcija: UcitavanjeOdeljenjaIzBaze)
 {
     let { nazivOdeljenja } = akcija;
     
-    //--->> ovo vraca ona dva koda, ono da je sve OK, i da nije
     const pacijentiSaNavedenogOdeljenja: Pacijent[] = yield uputiZahtevKaBazi("GET", 
-                                                   `${OdeljenjeOsnovniURL}/PacijentiSaOdeljenja/${nazivOdeljenja}`);
+                                        `${OdeljenjeOsnovniURL}/PacijentiSaOdeljenja/${nazivOdeljenja}`);
     
-    console.log(pacijentiSaNavedenogOdeljenja);
-    yield saga.put(ProslediOdeljenjeReduceru(pacijentiSaNavedenogOdeljenja));
+    if(pacijentiSaNavedenogOdeljenja.length === 0)
+        yield saga.put(ProslediPraznoOdeljenjeAkcija());
+    else
+        yield saga.put(ProslediOdeljenjeReduceru(pacijentiSaNavedenogOdeljenja));
 }
 
 function* dodajPacijenta(akcija: DodavanjePacijenta)
 {
     const { pacijent } = akcija;
-    console.log(pacijent);
-
+    
     yield uputiZahtevKaBazi("POST", `${OdeljenjeOsnovniURL}/DodajPacijenta`, pacijent);
 }
 
@@ -58,10 +58,8 @@ function* uputiZahtevKaBazi(metoda: string, URL: string, podaci?: any)//podaci s
     if(podaci)
         HTTPZahtev.body = JSON.stringify(podaci);
 
-    console.log(podaci);
     let ishodFetcha = yield fetch(URL, HTTPZahtev);
-    console.log(ishodFetcha);
-
+  
     if(metoda !== "DELETE" && metoda !== "POST")
         return yield ishodFetcha.json();
 }

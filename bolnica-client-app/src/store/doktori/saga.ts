@@ -1,6 +1,5 @@
 import * as saga from 'redux-saga/effects';
 import { AkcijeDoktor, LoginDoktoraProba, RegistracijaDoktoraPokusaj } from './model';
-import { Doktor } from '../../models/Doktor';
 import { LoginDoktoraLosUsername, LoginDoktoraLosaSifra, LoginDoktoraUspeh, RegistracijaDoktoraUspesna, RegistracijeDoktoraLosUsername } from './akcije';
 
 const DoktoriOsnovniURL: string = "https://localhost:44389/api/Doktor";

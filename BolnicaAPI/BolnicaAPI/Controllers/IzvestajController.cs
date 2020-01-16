@@ -38,7 +38,7 @@ namespace BolnicaAPI.Controllers
                                     })
                                     .Results;
             if (upit.Count() == 0)
-                return "1001";//nema izvestaja
+                return "1001";//kod koji kaze da nema izvestaja
             else
                 return upit.ToList();
         }

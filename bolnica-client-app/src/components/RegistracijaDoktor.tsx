@@ -6,10 +6,13 @@ import { RegistracijaDoktoraPokusavanje } from "../store/doktori/akcije";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 
+import vojaParlamentarniIzbori from '../slikeZaHome/VojaParlamentarniIzbori.jpg';
+
 interface Props
 {
     korisnickoImeJeZauzeto: boolean,
-    nekoJePrijavljen: boolean
+    nekoJePrijavljen: boolean,
+    prijavaSeObradjuje: boolean
 }
 
 interface ActionProps
@@ -35,7 +38,10 @@ class RegistracijaDoktor extends React.Component<Props & ActionProps, State>
 
         return(
             <div className="col-sm-6 offset-sm-3 text-center">
-                <h3>Napravi nalog</h3>
+                <h1>Napravi nalog</h1>
+                {
+                    this.props.prijavaSeObradjuje && this.renderujLoading()
+                }
                 <div className="form-group">
                     <label className="control-label" style={{fontWeight: "bold"}}>Ime:</label>
                         <input type="text" 
@@ -78,7 +84,8 @@ class RegistracijaDoktor extends React.Component<Props & ActionProps, State>
                 </div>
                 <div className="form-group">
                     <button className="btn btn-primary btn-lg"
-                            onClick={this.kreirajNalog}>
+                            onClick={this.kreirajNalog}
+                            disabled={this.props.prijavaSeObradjuje}>
                         Kreiraj nalog
                     </button>
                 </div>
@@ -101,11 +108,22 @@ class RegistracijaDoktor extends React.Component<Props & ActionProps, State>
 
         this.props.registrujDoktora(noviDoktor);
     }
+
+    renderujLoading(): JSX.Element
+    {
+        return (
+            <React.Fragment>
+                <h3 className="col-sm-6 offset-sm-3 text-center border">PRIJAVA SE OBRAĐUJE...</h3>
+                <img src={vojaParlamentarniIzbori} alt="Nema slike" className="col-sm-12 offset-sm-1 text-center"/>
+            </React.Fragment>
+        );
+    }
 }
 
 const mapStateToProps = (rootStanje: RootStanje): Props => {
     const { doktorDetalji } = rootStanje;
     return {
+        prijavaSeObradjuje: doktorDetalji.prijavaSeObradjuje,
         korisnickoImeJeZauzeto: doktorDetalji.korisnickoImeJeZauzeto,
         nekoJePrijavljen: doktorDetalji.doktorJePrijavljen
     }
