@@ -46,11 +46,6 @@ class NavigacionaTraka extends React.Component<Props & ActionProps>
                          activeClassName="btn btn-outline-warning">
                          <h3>Unos pacijenta</h3>
                 </NavLink>
-                <NavLink exact to="/unesiIzvestaj" 
-                         className="navbar-brand"
-                         activeClassName="btn btn-outline-warning">
-                         <h3>Unos izveštaja</h3>
-                </NavLink>
                 <NavLink exact to="/Odeljenja" 
                          className="navbar-brand"
                          activeClassName="btn btn-outline-warning">
@@ -64,7 +59,6 @@ class NavigacionaTraka extends React.Component<Props & ActionProps>
                             }): Izloguj se
                          </h3>
                 </a>
-        
             </React.Fragment>
         );
     }

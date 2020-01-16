@@ -77,10 +77,21 @@ namespace BolnicaAPI.Controllers
         {
             this.GrafBaza.GraphClient
                          .Cypher
-                         .Match($"(pacijent: Pacijent {{IDPacijenta:\"{IDPacijenta}\"}})-[:POSEDUJE]->(izvestaji:Izvestaj)")
-                         .DetachDelete("izvestaji")
+                         .Match($"(pacijent: Pacijent {{IDPacijenta:\"{IDPacijenta}\"}})")
+                         .With("pacijent")
+                         .OptionalMatch("(pacijent)-[:POSEDUJE]->(izvestaj:Izvestaj)")
+                         .DetachDelete("izvestaj")
                          .DetachDelete("pacijent")
                          .ExecuteWithoutResults();
         }
+
+        /*
+         MATCH (poi:PointOfInterest)
+         WHERE poi.id = "X0007"
+         WITH poi
+         OPTIONAL MATCH (poi)-[r]-(allRelatedNodes)
+         WHERE size((allRelatedNodes)--()) = 1    
+         DETACH DELETE poi, allRelatedNodes
+         */
     }
 }

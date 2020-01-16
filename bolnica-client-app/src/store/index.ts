@@ -17,7 +17,7 @@ export interface RootStanje
 {
     doktorDetalji: DoktorStanje,
     izvestajDetalji: StanjeIzvestaja,
-    odeljenjaDetalji: StanjeOdeljenja
+    odeljenjaDetalji: StanjeOdeljenja,
 }
 
 const rootReducer = combineReducers({

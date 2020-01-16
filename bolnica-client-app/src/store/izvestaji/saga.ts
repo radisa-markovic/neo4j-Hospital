@@ -52,7 +52,7 @@ function* uputiZahtevKaBazi(metoda: string, URL: string, podaci?: any)//podaci s
     let ishodFetcha = yield fetch(URL, HTTPZahtev);
     
     //------>> ovo mozda moze i da se promeni, malo sam umoran da ga stelujem, al ono, nek se nadje kao napomena
-    if(ishodFetcha.ok)
+    if(metoda !== "POST" && metoda !== "DELETE") //novo krpljenje 
         return yield ishodFetcha.json();
     else
         return ishodFetcha.status.toString();

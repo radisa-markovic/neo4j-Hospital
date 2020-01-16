@@ -2,7 +2,7 @@ export interface Doktor
 {
     ime: string,
     prezime: string,
-    specijalnost: string, //iliti odeljenje (hirurgija, psihijatrija....)
+    specijalnost: string,
     korisnickoIme: string,
     lozinka: string
 }

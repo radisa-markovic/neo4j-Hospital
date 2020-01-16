@@ -48,17 +48,27 @@ class PacijentView extends React.Component<Props & ActionProps, {}>
                 <div className="btn-group-vertical">
                     <button className="btn btn-primary btn-sm">Pogledaj izveštaje</button>
                     <Link to={`/Odeljenja/${this.props.odeljenje}/${IDPacijenta}`} 
-                          className="btn btn-warning btn-sm">Dodaj izveštaj
+                          className="btn btn-warning btn-sm">
+                            Dodaj izveštaj
                     </Link>
                     <button className="btn btn-danger btn-sm"
-                            onClick={this.otpustiPacijenta}>Otpusti pacijenta</button>
+                            onClick={this.otpustiPacijenta}>
+                            Otpusti pacijenta
+                    </button>
                 </div>
             </div>
         );
+        //putanja do forme: `/Odeljenja/${this.props.odeljenje}/${IDPacijenta}`
     }
 
     otpustiPacijenta = (): void => {
         this.props.otpustiPacijenta(this.props.pacijent.idPacijenta);//da vidim dal je toliko prosto....
+    }
+
+    dodajIzvestaj = (): void => {
+        //ideja je da ovde prvo opalim akciju koja ce da upise pacijenta u reducer za pacijenta "na obradi"
+        //(koji cu da napravim), pa da preko history.push({negde}) ucitam onu komponentu koja ce istog pacijenta
+        //...da pokupi iz reducera
     }
 }
 

@@ -1,7 +1,6 @@
 import { Pacijent } from "../../models/Pacijent";
 import { Action } from "redux";
 import { AkcijeOdeljenja, DodavanjePacijenta, OtpustanjePacijenta, ProsledjivanjeOdeljenjaUReducer, UcitavanjeOdeljenjaIzBaze } from "./model";
-import PacijentView from "../../components/PacijentView";
 
 export interface StanjeOdeljenja
 {

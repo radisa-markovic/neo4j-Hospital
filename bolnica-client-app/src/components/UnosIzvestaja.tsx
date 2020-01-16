@@ -1,6 +1,10 @@
 import React from "react";
-import { Doktor } from "../models/Doktor";
 import { Izvestaj } from "../models/Izvestaj";
+import { Dispatch } from "redux";
+import { DodajIzvestaj } from "../store/izvestaji/akcije";
+import { connect } from "react-redux";
+import { RouteComponentProps } from "react-router-dom";
+import uniqid from 'uniqid';
 import { RootStanje } from "../store";
 
 //ovo treba da bude vezano za pacijenta, i da na klik izlistam stranicu gde su pacijentovi izvestaji
@@ -17,12 +21,9 @@ import { RootStanje } from "../store";
 
 //ovo je idealno da se izvuce iz one graf baze nekako, posto ovo mogu da vezem i za doktora (NAPISAO)..
 //..i za pacijenta (POSEDUJE)
+
 interface Props
 {
-    idPacijenta: string,
-    imePacijenta: string,
-    prezimePacijenta: string,
-    odeljenjePacijenta: string,
     korisnickoImeDoktora: string
 }
 
@@ -33,36 +34,35 @@ interface ActionProps
 
 interface State
 {
-    identifikator: string,
+    IDIzvestaja: string,
     novaDijagnoza: string
 }
 
+type KompletanProps = Props & ActionProps & RouteComponentProps<{IDPacijenta: string}>;
+
 //Odeljenja/:Naziv/:IDPacijenta
-class UnosIzvestaja extends React.Component<Props & ActionProps, State>
+class UnosIzvestaja extends React.Component<KompletanProps, State>
 {
+    componentDidMount(): void
+    {
+        console.log(this.props.match.params.IDPacijenta);
+    }
+
     render(): JSX.Element
     {
         return(
             <div className="col-sm-6 offset-sm-3 text-center">
-                <h1>Unesi izveštaj</h1>
+                <h1>Unesi izveštaj za {this.props.match.params.IDPacijenta}</h1>
                 <div className="form-group">
-                <label className="control-label">Ime pacijenta:</label>
-                    <input readOnly={true}
-                           type="text" 
-                           name="ime" 
-                           value={this.props.imePacijenta} 
-                           className="form-control"/>
-                    <label className="control-label">Prezime pacijenta:</label>
-                    <input readOnly={true} 
-                           type="text" 
-                           name="prezime" 
-                           value={this.props.prezimePacijenta} 
-                           className="form-control"/>
                 <label className="control-label">Unesi novu dijagnozu:</label>
                     <textarea name="novaDijagnoza" 
                               placeholder="Unesi dijagnozu" 
                               className="form-control"
                               onChange={this.onChangeDijagnoza}/>
+                    <button className="btn btn-primary btn-lg"
+                            onClick={this.podnesiIzvestaj}>
+                        Potvrdi izveštaj
+                    </button>
                 </div>
             </div>
         );
@@ -71,17 +71,46 @@ class UnosIzvestaja extends React.Component<Props & ActionProps, State>
     onChangeDijagnoza = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
         this.setState({ novaDijagnoza: event.target.value });
     }
-}
 
-const mapStateToProps = (rootStanje: RootStanje): Props => {
-    const { doktorDetalji, izvestajDetalji, odeljenjaDetalji } = rootStanje;
-    return {
-        idPacijenta: "prosledi preko rute",
-        odeljenjePacijenta: odeljenjaDetalji.nazivOdeljenja,
-        imePacijenta: "ili preko rute da unesem, ili da unesem preko reducera nekako",
-        prezimePacijenta: "isto kao ime, tj isto vazi",
-        korisnickoImeDoktora: doktorDetalji.doktor.korisnickoIme
+    podnesiIzvestaj = (event: React.MouseEvent<HTMLButtonElement>): void => {
+        let noviIzvestaj: Izvestaj = {
+            KorisnickoImeDoktora: this.props.korisnickoImeDoktora,
+            idPacijenta: this.props.match.params.IDPacijenta,
+            IDIzvestaja: uniqid("izvestaj-"),
+            datumPisanja: this.vratiDatumPisanja(),
+            sadrzaj: this.state.novaDijagnoza
+        };
+
+        console.log(noviIzvestaj);
+        this.props.potvrdiIzvestaj(noviIzvestaj);
+    }
+
+    vratiDatumPisanja = (): string => {
+        let danasnjiDatum = new Date();
+        let dan = danasnjiDatum.getDate().toString();
+        let mesec = (danasnjiDatum.getMonth() + 1).toString();
+        let godina = danasnjiDatum.getFullYear().toString();
+
+        if(parseInt(dan) < 10)
+            dan = '0' + dan;
+        
+        if(parseInt(mesec) < 10)
+            mesec = '0' + mesec;
+
+        return `${dan}-${mesec}-${godina}`;
     }
 }
 
-export default UnosIzvestaja;
+const mapStateToProps = (rootStanje: RootStanje): Props => {
+    return {
+        korisnickoImeDoktora: rootStanje.doktorDetalji.doktor.korisnickoIme
+    }
+}
+
+const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
+    return {
+        potvrdiIzvestaj: (noviIzvestaj: Izvestaj) => dispatch(DodajIzvestaj(noviIzvestaj))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(UnosIzvestaja);

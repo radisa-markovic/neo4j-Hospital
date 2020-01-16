@@ -33,8 +33,9 @@ class LoginDoktor extends React.Component<Props & ActionProps, State>
 
     render(): JSX.Element
     {
-        if(this.props.prijavaJeUspela)
-            return <Redirect to="/" />
+        //ne znam sto nece da odradi zastitu,...
+        if(this.props.prijavaJeUspela === true)
+            return <Redirect exact to="/" />
         
         return(
             <div className="col-sm-6 offset-sm-3 text-center">

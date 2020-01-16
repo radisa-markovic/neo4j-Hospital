@@ -60,7 +60,7 @@ class RegistracijaDoktor extends React.Component<Props & ActionProps, State>
                                onChange={this.onChangeInput}/>
                     <label className="control-label" style={{fontWeight: "bold"}}>Korisničko ime:</label>
                         <input type="korisnickoIme" 
-                                name="inputKorisnickoIme" 
+                                name="korisnickoIme" 
                                 className="form-control"
                                 placeholder="Unesi korisničko ime" 
                                 style={{textAlign: "center"}}
@@ -99,7 +99,6 @@ class RegistracijaDoktor extends React.Component<Props & ActionProps, State>
             specijalnost: this.state.specijalnost
         };
 
-        alert(`Paket paket trave \n ${noviDoktor}`);
         this.props.registrujDoktora(noviDoktor);
     }
 }
