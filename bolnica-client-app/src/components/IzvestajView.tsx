@@ -2,7 +2,7 @@ import React from "react";
 
 //prezentaciona komponenta koja ne zna za redux...
 
-class IzvestajKomponenta extends React.Component<{}, {}>
+class IzvestajView extends React.Component<{}, {}>
 {
     render(): JSX.Element
     {
@@ -14,4 +14,4 @@ class IzvestajKomponenta extends React.Component<{}, {}>
     }
 }
 
-export default IzvestajKomponenta;
+export default IzvestajView;

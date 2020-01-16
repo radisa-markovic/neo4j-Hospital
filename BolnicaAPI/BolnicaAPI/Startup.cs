@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BolnicaAPI.Servisi;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -38,7 +39,7 @@ namespace BolnicaAPI
                     );
             });
 
-
+            services.AddScoped<IGrafBaza, GrafBaza>();//i ovo sad kao imam ubaceno negde, sta ga znam
             services.AddControllers();
         }
 

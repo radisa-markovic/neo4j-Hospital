@@ -1,4 +1,5 @@
 ﻿using BolnicaAPI.Models;
+using BolnicaAPI.Servisi;
 using Microsoft.AspNetCore.Mvc;
 using Neo4jClient; //klijent, a ne ono sto sam skinuo, mada ono, i nisam nesto narocito bistar....
 using System;
@@ -11,14 +12,17 @@ namespace BolnicaAPI.Controllers
     [ApiController]
     public class DoktorController : ControllerBase
     {
-        private GraphClient _klijent = new GraphClient(new Uri("http://localhost:7474/db/data"), "neo4j", "bolnica");
-     
+        private IGrafBaza GrafBaza { get; } //on ce da zna da nadje implementaciju jer sam je ja registrovao tako u onom Startup.cs falju
+        public DoktorController(IGrafBaza grafBaza)
+        {
+            this.GrafBaza = grafBaza;
+        }
         // GET: api/Doktor/VratiDoktore
         [HttpGet]
         public IEnumerable<Doktor> VratiDoktore()
         {
-            this._klijent.Connect();
-            var query = this._klijent.Cypher
+            var query = this.GrafBaza.GraphClient
+                                     .Cypher
                                      .Match("(doktor: Doktor)")
                                      .Return(doktor => doktor.As<Doktor>())
                                      .Results;
@@ -30,8 +34,8 @@ namespace BolnicaAPI.Controllers
         [HttpGet("{korisnickoIme}")]
         public Doktor VratiJednogDoktora(string korisnickoIme)
         {
-            this._klijent.Connect();
-            var upit = this._klijent.Cypher
+            var upit = this.GrafBaza.GraphClient
+                                    .Cypher
                                     .Match("(doktor: Doktor)")
                                     .Where((Doktor doktor) => doktor.KorisnickoIme == korisnickoIme)
                                     .Return(doktor => doktor.As<Doktor>())
@@ -44,9 +48,8 @@ namespace BolnicaAPI.Controllers
         [HttpPost]
         public string RegistrujDoktora([FromBody] Doktor noviDoktor)
         {
-            this._klijent.Connect();
-
-            var upit = this._klijent.Cypher
+            var upit = this.GrafBaza.GraphClient
+                                    .Cypher
                                     .Match("(doktor: Doktor)")
                                     .Where((Doktor doktor) => doktor.KorisnickoIme == noviDoktor.KorisnickoIme)
                                     .Return(doktor => doktor.As<Doktor>())
@@ -54,7 +57,8 @@ namespace BolnicaAPI.Controllers
             if (upit.Count() != 0)
                 return "1001";//korisnicko ime je zauzeto
 
-            this._klijent.Cypher
+            this.GrafBaza.GraphClient
+                         .Cypher
                          .Create("(doktor: Doktor {noviDoktor})")
                          .WithParam("noviDoktor", noviDoktor)
                          .ExecuteWithoutResults(); //ovo zadnje je void, pa i ne trebam da dodeljujem nicemu
@@ -66,12 +70,11 @@ namespace BolnicaAPI.Controllers
         [HttpPost]
         public object UlogujDoktora([FromBody] Dictionary<string, string> podaciZaLogin)
         {
-            this._klijent.Connect();
-
             string prosledjenoKorisnickoIme = podaciZaLogin.ElementAt(0).Value;
             string prosledjenaLozinka = podaciZaLogin.ElementAt(1).Value;
 
-            var upit = this._klijent.Cypher
+            var upit = this.GrafBaza.GraphClient
+                                    .Cypher
                                     .Match("(doktor: Doktor)")
                                     .Where((Doktor doktor) => doktor.KorisnickoIme == prosledjenoKorisnickoIme)
                                     .Return(doktor => doktor.As<Doktor>())

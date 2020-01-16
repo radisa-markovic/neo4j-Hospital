@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BolnicaAPI.Models;
+using BolnicaAPI.Servisi;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Neo4jClient;
@@ -13,15 +14,19 @@ namespace BolnicaAPI.Controllers
     [ApiController]
     public class IzvestajController : ControllerBase
     {
-        private GraphClient _klijent = new GraphClient(new Uri("http://localhost:7474/db/data"), "neo4j", "bolnica");
+        private IGrafBaza GrafBaza { get; }
+
+        public IzvestajController(IGrafBaza grafBaza)
+        {
+            this.GrafBaza = grafBaza;
+        }
 
         // GET: api/Izvestaj/VratiPacijentoveIzvestaje/{idPacijenta}
         [HttpGet("{idPacijenta}")]
         public object VratiPacijentoveIzvestaje(string idPacijenta)
         {
-            this._klijent.Connect();
-
-            var upit = this._klijent.Cypher
+            var upit = this.GrafBaza.GraphClient
+                                    .Cypher
                                     .Match($"(pacijent:Pacijent {{IDPacijenta: \"{idPacijenta}\"}})-[:POSEDUJE]->(izvestaj:Izvestaj)<-[:NAPISAO]-(doktor:Doktor)")
                                     .Return((doktor, izvestaj, pacijent) => new
                                     {
@@ -42,8 +47,8 @@ namespace BolnicaAPI.Controllers
         [HttpPost]
         public void DodajIzvestaj([FromBody] Izvestaj noviIzvestaj)
         {
-            this._klijent.Connect();
-            this._klijent.Cypher
+            this.GrafBaza.GraphClient
+                         .Cypher
                          .Merge($"(pacijent:Pacijent {{IDPacijenta: \"{noviIzvestaj.IDPacijenta}\"}})")
                          .With("pacijent")
                          .Merge($"(izvestaj:Izvestaj { this.IzvuciPodatkeZaCvor(noviIzvestaj) })")

@@ -61,11 +61,6 @@ function* uputiZahtevKaBazi(metoda: string, URL: string, podaci?: any)//podaci s
     let ishodFetcha = yield fetch(URL, HTTPZahtev);
     console.log(ishodFetcha);
 
-    if(metoda !== "DELETE") //zaobilaznica maksimalno opusteno, njiiiii prrrhhhh
+    if(metoda !== "DELETE")
         return yield ishodFetcha.json();
-    //------>> ovo mozda moze i da se promeni, malo sam umoran da ga stelujem, al ono, nek se nadje kao napomena
-    // if(ishodFetcha.ok)
-    //     return yield ishodFetcha.json();
-    // else
-    //     return ishodFetcha.status.toString();
 }

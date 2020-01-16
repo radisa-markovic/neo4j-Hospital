@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BolnicaAPI.Models;
+using BolnicaAPI.Servisi;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Neo4jClient;
@@ -13,14 +14,19 @@ namespace BolnicaAPI.Controllers
     [ApiController]
     public class OdeljenjeController : ControllerBase
     {
-        private GraphClient _klijent = new GraphClient(new Uri("http://localhost:7474/db/data"), "neo4j", "bolnica");
+        private IGrafBaza GrafBaza { get; }
+
+        public OdeljenjeController(IGrafBaza grafBaza)
+        {
+            this.GrafBaza = grafBaza;
+        }
 
         // GET: api/Odeljenje/NaziviOdeljenja, //--->> potencijalno cu ovo da hardkodujem, videcu
         [HttpGet]
         public string NaziviOdeljenja()//uvek moze object ako ovo krene da zeza...
         {
-            this._klijent.Connect();
-            var naziviOdeljenja = this._klijent.Cypher
+            var naziviOdeljenja = this.GrafBaza.GraphClient
+                                               .Cypher
                                                .Match("(odeljenje:Odeljenje)")
                                                .Return(odeljenje => odeljenje.As<Odeljenje>())
                                                .Results;
@@ -33,8 +39,8 @@ namespace BolnicaAPI.Controllers
         [HttpGet("{nazivOdeljenja}")]
         public IEnumerable<Pacijent> PacijentiSaOdeljenja(string nazivOdeljenja)
         {
-            this._klijent.Connect();
-            var pacijenti = this._klijent.Cypher
+            var pacijenti = this.GrafBaza.GraphClient
+                                         .Cypher
                                          .Match($"(pacijenti:Pacijent)-[:NALAZI_SE_NA]->(odeljenje:Odeljenje{{ Naziv: '{nazivOdeljenja}'}})")
                                          .Return(pacijenti => pacijenti.As<Pacijent>())
                                          .Results;
@@ -47,8 +53,8 @@ namespace BolnicaAPI.Controllers
         [HttpPost]
         public void DodajPacijenta([FromBody] Pacijent noviPacijent)
         {
-            this._klijent.Connect();
-            this._klijent.Cypher
+            this.GrafBaza.GraphClient
+                         .Cypher
                          .Merge($"(odeljenje:Odeljenje{{Naziv: '{noviPacijent.Odeljenje}'}})")
                          .With("odeljenje")
                          .Merge($"(pacijent:Pacijent { this.IzvuciPodatkeZaCvor(noviPacijent) })")
@@ -69,8 +75,8 @@ namespace BolnicaAPI.Controllers
         [HttpDelete("{IDPacijenta}")]
         public void OtpustiPacijenta(string IDPacijenta)
         {
-            this._klijent.Connect();
-            this._klijent.Cypher
+            this.GrafBaza.GraphClient
+                         .Cypher
                          .Match($"(pacijent: Pacijent {{IDPacijenta:\"{IDPacijenta}\"}})-[:POSEDUJE]->(izvestaji:Izvestaj)")
                          .DetachDelete("izvestaji")
                          .DetachDelete("pacijent")
