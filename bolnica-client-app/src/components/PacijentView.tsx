@@ -46,7 +46,10 @@ class PacijentView extends React.Component<Props & ActionProps, {}>
                 <p className="control-label">Odeljenje: {this.props.odeljenje}</p>
                 <p className="control-label">Datum smeštanja: {datumSmestanja}</p>
                 <div className="btn-group-vertical">
-                    <button className="btn btn-primary btn-sm">Pogledaj izveštaje</button>
+                    <Link to={`/vratiIzvestaje/${IDPacijenta}`}
+                            className="btn btn-primary btn-sm">
+                        Pogledaj izveštaje
+                    </Link>
                     <Link to={`/Odeljenja/${this.props.odeljenje}/${IDPacijenta}`} 
                           className="btn btn-warning btn-sm">
                             Dodaj izveštaj

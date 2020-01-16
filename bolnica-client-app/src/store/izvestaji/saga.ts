@@ -1,7 +1,6 @@
 import * as saga from 'redux-saga/effects';
 import { AkcijeIzvestaji, VracanjeIzvestajaPacijenta, DodavanjeIzvestaja } from './model';
-import { Izvestaj } from '../../models/Izvestaj';
-import { ProslediIzvestajeReduceru } from './akcije';
+import { ProslediIzvestajeReduceru, ProsledjivanjeIzvestajaGreska } from './akcije';
 
 const IzvestajiOsnovniURL: string = "https://localhost:44389/api/Izvestaj";
 
@@ -21,10 +20,14 @@ function* ucitajIzvestaje(akcija: VracanjeIzvestajaPacijenta)
     let { IDPacijenta } = akcija;
     
     //--->> ovo vraca ona dva koda, ono da je sve OK, i da nije
-    const pacijentoviIzvestaji: Izvestaj[] = yield uputiZahtevKaBazi("GET", 
+    const pacijentoviIzvestaji: any = yield uputiZahtevKaBazi("GET", 
                                                    `${IzvestajiOsnovniURL}/VratiPacijentoveIzvestaje/${IDPacijenta}`); 
     
-    yield saga.put(ProslediIzvestajeReduceru(pacijentoviIzvestaji));
+    console.log(pacijentoviIzvestaji);
+    if(pacijentoviIzvestaji === 1001)
+        yield saga.put(ProsledjivanjeIzvestajaGreska())
+    else
+        yield saga.put(ProslediIzvestajeReduceru(pacijentoviIzvestaji));
 }
 
 function* dodajIzvestaj(akcija: DodavanjeIzvestaja)

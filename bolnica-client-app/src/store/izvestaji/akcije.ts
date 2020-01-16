@@ -1,4 +1,4 @@
-import { DodavanjeIzvestaja, AkcijeIzvestaji, VracanjeIzvestajaPacijenta, ProsledjivanjeIzvestajaReduceru } from "./model";
+import { DodavanjeIzvestaja, AkcijeIzvestaji, VracanjeIzvestajaPacijenta, ProsledjivanjeIzvestajaReduceru, ProsledjivanjeIzvestajaReduceruGreska, ResetujStatuseZaUcitavanje } from "./model";
 import { Izvestaj } from "../../models/Izvestaj";
 
 export const DodajIzvestaj = (noviIzvestaj: Izvestaj): DodavanjeIzvestaja => {
@@ -19,5 +19,17 @@ export const ProslediIzvestajeReduceru = (izvestaji: Izvestaj[]): Prosledjivanje
     return {
         type: AkcijeIzvestaji.PROSLEDI_IZVESTAJE_REDUCERU,
         izvestaji: izvestaji
+    }
+}
+
+export const ProsledjivanjeIzvestajaGreska = (): ProsledjivanjeIzvestajaReduceruGreska => {
+    return {
+        type: AkcijeIzvestaji.PROSLEDI_IZVESTAJE_REDUCERU_GRESKA
+    }
+}
+
+export const ResetujStatuseAkcija = (): ResetujStatuseZaUcitavanje => {
+    return {
+        type: AkcijeIzvestaji.VRATI_STATUSE_ZA_UCITAVANJE
     }
 }

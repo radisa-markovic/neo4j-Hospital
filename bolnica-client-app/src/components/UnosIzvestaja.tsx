@@ -83,6 +83,8 @@ class UnosIzvestaja extends React.Component<KompletanProps, State>
 
         console.log(noviIzvestaj);
         this.props.potvrdiIzvestaj(noviIzvestaj);
+        alert(`Uspesno dodat izvestaj`);
+        this.props.history.push("/Odeljenja");//da vidim dal hoce da radi
     }
 
     vratiDatumPisanja = (): string => {

@@ -22,7 +22,7 @@ const App: React.FC = () => {
           <Route exact path="/Odeljenja" component={ListaSaOdeljenjima} />
           <Route exact path="/Odeljenja/:Naziv" component={Odeljenje} />
           <Route exact path="/Odeljenja/:Naziv/:IDPacijenta" component={UnosIzvestaja}/>
-          <Route exact path="/vratiIzvestaje:IDPacijenta" component={Izvestaji} />
+          <Route exact path="/vratiIzvestaje/:IDPacijenta" component={Izvestaji} />
           <Route exact path="/unesiPacijenta" component={UnosPacijenta} />
         </Switch>
       </BrowserRouter>

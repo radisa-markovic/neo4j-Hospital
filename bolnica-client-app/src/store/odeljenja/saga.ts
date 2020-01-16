@@ -32,7 +32,8 @@ function* ucitajOdeljenje(akcija: UcitavanjeOdeljenjaIzBaze)
 function* dodajPacijenta(akcija: DodavanjePacijenta)
 {
     const { pacijent } = akcija;
-    
+    console.log(pacijent);
+
     yield uputiZahtevKaBazi("POST", `${OdeljenjeOsnovniURL}/DodajPacijenta`, pacijent);
 }
 
@@ -61,6 +62,6 @@ function* uputiZahtevKaBazi(metoda: string, URL: string, podaci?: any)//podaci s
     let ishodFetcha = yield fetch(URL, HTTPZahtev);
     console.log(ishodFetcha);
 
-    if(metoda !== "DELETE")
+    if(metoda !== "DELETE" && metoda !== "POST")
         return yield ishodFetcha.json();
 }
