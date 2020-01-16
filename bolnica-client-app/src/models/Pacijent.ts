@@ -1,6 +1,6 @@
 export interface Pacijent
 {
-    IDPacijenta: string,
+    idPacijenta: string,
     ime: string,
     prezime: string,
     odeljenje: string, 

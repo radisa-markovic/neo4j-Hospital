@@ -2,10 +2,14 @@ import React from "react";
 import { Pacijent } from "../models/Pacijent";
 import uniqid from 'uniqid';
 import { RootStanje } from "../store";
+import { Dispatch } from "redux";
+import { DodajPacijenta } from "../store/odeljenja/akcije";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 interface Props
 {
-    unosJeUspesan: boolean
+    nekoJePrijavljen: boolean
 }
 
 interface ActionProps
@@ -18,7 +22,6 @@ interface State
     identifikacija: string,
     ime: string,
     prezime: string,
-    dijagnoza: string,
     odeljenje: string,
     datumSmestanja: string
 }
@@ -29,13 +32,14 @@ class UnosPacijenta extends React.Component<Props & ActionProps, State>
         identifikacija: "", 
         ime: "",
         prezime: "",
-        dijagnoza: "",
         odeljenje: "Kardiovaskularno", //hardkodovano je, to je ono iz select-a pa option selected
         datumSmestanja: ""
     };
 
     render(): JSX.Element
     {
+        if(!this.props.nekoJePrijavljen)
+            return <Redirect to="/" />
         return(
             <div className="col-sm-6 offset-sm-3 text-center">
                 <h1>Unesi detalje o pacijentu</h1>
@@ -52,11 +56,6 @@ class UnosPacijenta extends React.Component<Props & ActionProps, State>
                            placeholder="Unesi prezime" 
                            className="form-control"
                            onChange={this.onChangeInput}/>
-                    <label className="control-label">Dijagnoza:</label>       
-                    <textarea name="dijagnoza" 
-                              placeholder="Unesi dijagnozu" 
-                              className="form-control"
-                              onChange={this.onChangeDijagnoza}/>
                     <p>Odeljenje</p>
                     <select className="form-control" 
                             onChange={this.onChangeOdeljenje}> 
@@ -81,10 +80,6 @@ class UnosPacijenta extends React.Component<Props & ActionProps, State>
         this.setState({ [event.target.name] : event.target.value } as Pick<State, any>);
     }
 
-    onChangeDijagnoza = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
-        this.setState({dijagnoza : event.target.value});
-    }
-
     onChangeOdeljenje = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         this.setState({odeljenje: event.target.value});
     }
@@ -106,17 +101,29 @@ class UnosPacijenta extends React.Component<Props & ActionProps, State>
         console.log(punDatumPrijave);
 
         let noviPacijent: Pacijent = {
-            IDPacijenta: uniqid("pacijent-"),
+            idPacijenta: uniqid("pacijent-"),
             ime: this.state.ime,
             prezime: this.state.prezime,
-            odeljenje: this.state.dijagnoza,
+            odeljenje: this.state.odeljenje,
             datumSmestanja: punDatumPrijave
         };
         
-        alert(`Klik na dugme`);
         console.log(noviPacijent);
-        //this.props.unesiPacijenta(noviPacijent);
+        this.props.unesiPacijenta(noviPacijent);
     }
 }
 
-export default UnosPacijenta;
+const mapStateToProps = (rootStanje: RootStanje): Props => {
+    const { doktorDetalji } = rootStanje;
+    return {
+        nekoJePrijavljen: doktorDetalji.doktorJePrijavljen 
+    }
+}
+
+const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
+    return {
+        unesiPacijenta: (noviPacijent: Pacijent) => dispatch(DodajPacijenta(noviPacijent))
+    }
+} 
+
+export default connect(mapStateToProps, mapDispatchToProps)(UnosPacijenta);

@@ -4,6 +4,7 @@ import { RootStanje } from "../store";
 import { Dispatch } from "redux";
 import { RegistracijaDoktoraPokusavanje } from "../store/doktori/akcije";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 interface Props
 {
@@ -20,6 +21,7 @@ interface State
 {
     ime: string,
     prezime: string,
+    specijalnost: string,
     korisnickoIme: string,
     lozinka: string
 }
@@ -28,6 +30,9 @@ class RegistracijaDoktor extends React.Component<Props & ActionProps, State>
 {
     render(): JSX.Element
     {
+        if(this.props.nekoJePrijavljen)
+            return <Redirect to="/" />
+
         return(
             <div className="col-sm-6 offset-sm-3 text-center">
                 <h3>Napravi nalog</h3>
@@ -46,6 +51,13 @@ class RegistracijaDoktor extends React.Component<Props & ActionProps, State>
                                 placeholder="Unesi prezime"
                                 style={{textAlign: "center"}}
                                 onChange={this.onChangeInput}/>
+                    <label className="control-label" style={{fontWeight: "bold"}}>Specijalnost:</label>
+                        <input type="text" 
+                               name="specijalnost" 
+                               className="form-control" 
+                               placeholder="Unesi specijalnost"
+                               style={{textAlign: "center"}}
+                               onChange={this.onChangeInput}/>
                     <label className="control-label" style={{fontWeight: "bold"}}>Korisničko ime:</label>
                         <input type="korisnickoIme" 
                                 name="inputKorisnickoIme" 
@@ -84,7 +96,7 @@ class RegistracijaDoktor extends React.Component<Props & ActionProps, State>
             prezime: this.state.prezime,
             korisnickoIme: this.state.korisnickoIme,
             lozinka: this.state.lozinka,
-            specijalnost: "Podesiti nekako specijalnost..."
+            specijalnost: this.state.specijalnost
         };
 
         alert(`Paket paket trave \n ${noviDoktor}`);

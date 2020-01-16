@@ -1,6 +1,7 @@
 import React from "react";
 import { Doktor } from "../models/Doktor";
 import { Izvestaj } from "../models/Izvestaj";
+import { RootStanje } from "../store";
 
 //ovo treba da bude vezano za pacijenta, i da na klik izlistam stranicu gde su pacijentovi izvestaji
 
@@ -22,7 +23,7 @@ interface Props
     imePacijenta: string,
     prezimePacijenta: string,
     odeljenjePacijenta: string,
-    prijavljeniDoktor: Doktor
+    korisnickoImeDoktora: string
 }
 
 interface ActionProps
@@ -36,7 +37,7 @@ interface State
     novaDijagnoza: string
 }
 
-//ovo mozda da bude ugnjezdena ruta za onaj prikaz pacijenta (pacijentView)
+//Odeljenja/:Naziv/:IDPacijenta
 class UnosIzvestaja extends React.Component<Props & ActionProps, State>
 {
     render(): JSX.Element
@@ -69,6 +70,17 @@ class UnosIzvestaja extends React.Component<Props & ActionProps, State>
 
     onChangeDijagnoza = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
         this.setState({ novaDijagnoza: event.target.value });
+    }
+}
+
+const mapStateToProps = (rootStanje: RootStanje): Props => {
+    const { doktorDetalji, izvestajDetalji, odeljenjaDetalji } = rootStanje;
+    return {
+        idPacijenta: "prosledi preko rute",
+        odeljenjePacijenta: odeljenjaDetalji.nazivOdeljenja,
+        imePacijenta: "ili preko rute da unesem, ili da unesem preko reducera nekako",
+        prezimePacijenta: "isto kao ime, tj isto vazi",
+        korisnickoImeDoktora: doktorDetalji.doktor.korisnickoIme
     }
 }
 

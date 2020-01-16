@@ -4,11 +4,13 @@ import { Dispatch } from 'redux';
 import { connect } from "react-redux";
 import { LoginDoktoraPokusaj } from "../store/doktori/akcije";
 import { RootStanje } from "../store";
+import { Redirect } from "react-router-dom";
 
 interface Props
 {
     korisnickoImeJePogresno: boolean,
-    lozinkaJePogresna: boolean
+    lozinkaJePogresna: boolean,
+    prijavaJeUspela: boolean
 }
 
 interface ActionProps
@@ -31,6 +33,9 @@ class LoginDoktor extends React.Component<Props & ActionProps, State>
 
     render(): JSX.Element
     {
+        if(this.props.prijavaJeUspela)
+            return <Redirect to="/" />
+        
         return(
             <div className="col-sm-6 offset-sm-3 text-center">
                 <h1>Prijavljivanje</h1>
@@ -69,14 +74,10 @@ class LoginDoktor extends React.Component<Props & ActionProps, State>
     }
 
     prijaviSe = (event: React.MouseEvent<HTMLButtonElement>): void => {
-        alert(`Prijava dr ${this.state.korisnickoIme}`);
         let loginPodaci: LoginDoktoraPodaci = {
             korisnickoIme: this.state.korisnickoIme,
             lozinka: this.state.lozinka
         };
-
-        console.log(loginPodaci);
-       
 
         this.props.ulogujDoktora(loginPodaci);
     }
@@ -92,7 +93,8 @@ const mapStateToProps = (rootStanje: RootStanje): Props => {
     const { doktorDetalji } = rootStanje;
     return {
         korisnickoImeJePogresno: doktorDetalji.korisnickoImeNePostoji,
-        lozinkaJePogresna: doktorDetalji.lozinkaJePogresna
+        lozinkaJePogresna: doktorDetalji.lozinkaJePogresna,
+        prijavaJeUspela: doktorDetalji.doktorJePrijavljen
     }
 }
 

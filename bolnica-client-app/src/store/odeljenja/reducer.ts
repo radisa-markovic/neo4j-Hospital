@@ -50,7 +50,7 @@ export default function reducer(stanje: StanjeOdeljenja = pocetnoStanje, akcija:
             const { IDPacijenta } = akcija as OtpustanjePacijenta;
             return {
                 ...stanje,
-                pacijenti: stanje.pacijenti.filter(pacijent => pacijent.IDPacijenta !== IDPacijenta)
+                pacijenti: stanje.pacijenti.filter(pacijent => pacijent.idPacijenta !== IDPacijenta)
             }
         }
 

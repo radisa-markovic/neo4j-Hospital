@@ -23,9 +23,9 @@ function* ucitajOdeljenje(akcija: UcitavanjeOdeljenjaIzBaze)
     
     //--->> ovo vraca ona dva koda, ono da je sve OK, i da nije
     const pacijentiSaNavedenogOdeljenja: Pacijent[] = yield uputiZahtevKaBazi("GET", 
-                                                   `${OdeljenjeOsnovniURL}/PacijentiSaOdeljenja`, 
-                                                    nazivOdeljenja);
+                                                   `${OdeljenjeOsnovniURL}/PacijentiSaOdeljenja/${nazivOdeljenja}`);
     
+    console.log(pacijentiSaNavedenogOdeljenja);
     yield saga.put(ProslediOdeljenjeReduceru(pacijentiSaNavedenogOdeljenja));
 }
 
@@ -57,11 +57,15 @@ function* uputiZahtevKaBazi(metoda: string, URL: string, podaci?: any)//podaci s
     if(podaci)
         HTTPZahtev.body = JSON.stringify(podaci);
 
+    console.log(podaci);
     let ishodFetcha = yield fetch(URL, HTTPZahtev);
-    
-    //------>> ovo mozda moze i da se promeni, malo sam umoran da ga stelujem, al ono, nek se nadje kao napomena
-    if(ishodFetcha.ok)
+    console.log(ishodFetcha);
+
+    if(metoda !== "DELETE") //zaobilaznica maksimalno opusteno, njiiiii prrrhhhh
         return yield ishodFetcha.json();
-    else
-        return ishodFetcha.status.toString();
+    //------>> ovo mozda moze i da se promeni, malo sam umoran da ga stelujem, al ono, nek se nadje kao napomena
+    // if(ishodFetcha.ok)
+    //     return yield ishodFetcha.json();
+    // else
+    //     return ishodFetcha.status.toString();
 }
