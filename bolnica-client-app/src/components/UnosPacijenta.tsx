@@ -3,7 +3,7 @@ import { Pacijent } from "../models/Pacijent";
 import uniqid from 'uniqid';
 import { RootStanje } from "../store";
 import { Dispatch } from "redux";
-import { DodajPacijenta } from "../store/odeljenja/akcije";
+import { A_DodajPacijenta } from "../store/odeljenja/akcije";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 
@@ -122,7 +122,7 @@ const mapStateToProps = (rootStanje: RootStanje): Props => {
 
 const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
     return {
-        unesiPacijenta: (noviPacijent: Pacijent) => dispatch(DodajPacijenta(noviPacijent))
+        unesiPacijenta: (noviPacijent: Pacijent) => dispatch(A_DodajPacijenta(noviPacijent))
     }
 } 
 

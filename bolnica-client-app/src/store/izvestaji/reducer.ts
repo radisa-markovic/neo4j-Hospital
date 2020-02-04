@@ -1,6 +1,6 @@
 import { Izvestaj } from "../../models/Izvestaj";
 import { Action } from "redux";
-import { AkcijeIzvestaji, ProsledjivanjeIzvestajaReduceru, VracanjeIzvestajaPacijenta, DodavanjeIzvestaja } from "./model";
+import { AkcijeIzvestaji, ProslediIzvestajeReduceru, VratiPacijentoveIzvestaje, DodajIzvestaj } from "./model";
 
 export interface StanjeIzvestaja
 {
@@ -23,7 +23,7 @@ export default function reducer(stanje: StanjeIzvestaja = pocetnoStanje, akcija:
     {
         case AkcijeIzvestaji.VRATI_IZVESTAJE_PACIJENTA:
         {
-            const { IDPacijenta } = akcija as VracanjeIzvestajaPacijenta;
+            const { IDPacijenta } = akcija as VratiPacijentoveIzvestaje;
             return {
                 ...stanje,
                 IDPacijenta: IDPacijenta
@@ -41,7 +41,7 @@ export default function reducer(stanje: StanjeIzvestaja = pocetnoStanje, akcija:
 
         case AkcijeIzvestaji.PROSLEDI_IZVESTAJE_REDUCERU:
         {
-            const { izvestaji } = akcija as ProsledjivanjeIzvestajaReduceru;
+            const { izvestaji } = akcija as ProslediIzvestajeReduceru;
             return {
                 ...stanje,
                 izvestaji: izvestaji,
@@ -52,7 +52,7 @@ export default function reducer(stanje: StanjeIzvestaja = pocetnoStanje, akcija:
 
         case AkcijeIzvestaji.DODAJ_IZVESTAJ:
         {
-            const { noviIzvestaj } = akcija as DodavanjeIzvestaja;
+            const { noviIzvestaj } = akcija as DodajIzvestaj;
             return {
                 ...stanje,
                 izvestaji: [...stanje.izvestaji, noviIzvestaj]

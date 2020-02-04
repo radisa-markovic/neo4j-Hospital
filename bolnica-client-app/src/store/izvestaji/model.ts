@@ -9,19 +9,19 @@ export enum AkcijeIzvestaji
     VRATI_STATUSE_ZA_UCITAVANJE = "[Akcije izvestaji] Vrati statuse za ucitavanje"
 }
 
-export interface DodavanjeIzvestaja
+export interface DodajIzvestaj
 {
     type: AkcijeIzvestaji,
     noviIzvestaj: Izvestaj
 }
 
-export interface VracanjeIzvestajaPacijenta
+export interface VratiPacijentoveIzvestaje
 {
     type: AkcijeIzvestaji,
     IDPacijenta: string
 }
 
-export interface ProsledjivanjeIzvestajaReduceru
+export interface ProslediIzvestajeReduceru
 {
     type: AkcijeIzvestaji,
     izvestaji: Izvestaj[]

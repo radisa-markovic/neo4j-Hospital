@@ -2,7 +2,7 @@ import React from "react";
 import { Doktor } from "../models/Doktor";
 import { RootStanje } from "../store";
 import { Dispatch } from "redux";
-import { RegistracijaDoktoraPokusavanje } from "../store/doktori/akcije";
+import { A_RegistracijaDoktoraPokusaj } from "../store/doktori/akcije";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 
@@ -131,7 +131,7 @@ const mapStateToProps = (rootStanje: RootStanje): Props => {
 
 const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
     return {
-        registrujDoktora: (noviDoktor: Doktor) => dispatch(RegistracijaDoktoraPokusavanje(noviDoktor))
+        registrujDoktora: (noviDoktor: Doktor) => dispatch(A_RegistracijaDoktoraPokusaj(noviDoktor))
     }
 }
 

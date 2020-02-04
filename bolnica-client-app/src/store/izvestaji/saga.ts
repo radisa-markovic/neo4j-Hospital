@@ -1,6 +1,6 @@
 import * as saga from 'redux-saga/effects';
-import { AkcijeIzvestaji, VracanjeIzvestajaPacijenta, DodavanjeIzvestaja } from './model';
-import { ProslediIzvestajeReduceru, ProsledjivanjeIzvestajaGreska } from './akcije';
+import { AkcijeIzvestaji, VratiPacijentoveIzvestaje, DodajIzvestaj } from './model';
+import { A_ProslediIzvestajeReduceru, A_ProsledjivanjeIzvestajaGreska } from './akcije';
 
 const IzvestajiOsnovniURL: string = "https://localhost:44389/api/Izvestaj";
 
@@ -15,7 +15,7 @@ function* posmatrajZahteve()
     yield saga.takeEvery(AkcijeIzvestaji.DODAJ_IZVESTAJ, dodajIzvestaj);
 }
 
-function* ucitajIzvestaje(akcija: VracanjeIzvestajaPacijenta)
+function* ucitajIzvestaje(akcija: VratiPacijentoveIzvestaje)
 {
     let { IDPacijenta } = akcija;
     
@@ -24,12 +24,12 @@ function* ucitajIzvestaje(akcija: VracanjeIzvestajaPacijenta)
                                                    `${IzvestajiOsnovniURL}/VratiPacijentoveIzvestaje/${IDPacijenta}`); 
     
     if(pacijentoviIzvestaji === 1001)
-        yield saga.put(ProsledjivanjeIzvestajaGreska())
+        yield saga.put(A_ProsledjivanjeIzvestajaGreska())
     else
-        yield saga.put(ProslediIzvestajeReduceru(pacijentoviIzvestaji));
+        yield saga.put(A_ProslediIzvestajeReduceru(pacijentoviIzvestaji));
 }
 
-function* dodajIzvestaj(akcija: DodavanjeIzvestaja)
+function* dodajIzvestaj(akcija: DodajIzvestaj)
 {
     const { noviIzvestaj } = akcija;
     

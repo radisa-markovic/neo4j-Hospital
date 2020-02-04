@@ -1,7 +1,7 @@
 import React from "react";
 import { Pacijent } from "../models/Pacijent";
 import { Dispatch } from "redux";
-import { OtpustiPacijenta } from "../store/odeljenja/akcije";
+import { A_OtpustiPacijenta } from "../store/odeljenja/akcije";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -55,7 +55,7 @@ class PacijentView extends React.Component<Props & ActionProps, {}>
 
 const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
     return {
-        otpustiPacijenta: (idPacijenta: string) => dispatch(OtpustiPacijenta(idPacijenta))
+        otpustiPacijenta: (idPacijenta: string) => dispatch(A_OtpustiPacijenta(idPacijenta))
     }
 }
 

@@ -1,6 +1,6 @@
 import { Doktor } from "../../models/Doktor";
 import { Action } from "redux";
-import { AkcijeDoktor, LoginDoktoraUspesan, LoginDoktoraPogresanUsername, LoginDoktoraPogresnaSifra, RegistracijaDoktoraUspeh, RegistracijaDoktoraZauzetUsername, LoginDoktoraProba } from "./model";
+import { AkcijeDoktor, LoginDoktoraUspeh, LoginDoktoraPogresanUsername, LoginDoktoraPogresnaSifra, RegistracijaDoktoraUspeh, RegistracijaDoktoraZauzetUsername, LoginDoktoraProba } from "./model";
 
 export interface DoktorStanje
 {
@@ -49,7 +49,7 @@ export default function reducer(stanje: DoktorStanje = pocetnoStanje, akcija: Ac
 
         case AkcijeDoktor.LOGIN_DOKTOR_USPEH:
         {
-            const { doktor } = akcija as LoginDoktoraUspesan;
+            const { doktor } = akcija as LoginDoktoraUspeh;
             return {
                 ...stanje,
                 doktor: doktor,

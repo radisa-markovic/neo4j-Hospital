@@ -10,31 +10,31 @@ export enum AkcijeOdeljenja
     VRATI_STATUSE_NA_POCETNO = "[Akcije odeljenja] Vrati statuse na pocetno"
 }
 
-export interface DodavanjePacijenta
+export interface DodajPacijenta
 {
     type: AkcijeOdeljenja,
     pacijent: Pacijent //on u sebi sadrzi naziv odeljenja gde ce da se smesti
 }
 
-export interface OtpustanjePacijenta
+export interface OtpustiPacijenta
 {
     type: AkcijeOdeljenja,
     IDPacijenta: string
 }
 
-export interface UcitavanjeOdeljenjaIzBaze //ovo moze preko Route parametara
+export interface UcitajOdeljenjaIzBaze //ovo moze preko Route parametara
 {
     type: AkcijeOdeljenja,
     nazivOdeljenja: string
 }
 
-export interface ProsledjivanjeOdeljenjaUReducer
+export interface ProslediOdeljenjeReduceru
 {
     type: AkcijeOdeljenja,
     pacijenti: Pacijent[]
 }
 
-export interface ProslediPraznoOdeljenjeUReducer
+export interface ProslediPraznoOdeljenje
 {
     type: AkcijeOdeljenja
 }

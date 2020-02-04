@@ -2,7 +2,7 @@ import React from "react";
 import { LoginDoktoraPodaci } from "../store/doktori/model";
 import { Dispatch } from 'redux';
 import { connect } from "react-redux";
-import { LoginDoktoraPokusaj } from "../store/doktori/akcije";
+import { A_LoginDoktoraProba } from "../store/doktori/akcije";
 import { RootStanje } from "../store";
 import { Redirect } from "react-router-dom";
 
@@ -103,7 +103,7 @@ class LoginDoktor extends React.Component<Props & ActionProps, State>
 
 const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
     return {
-        ulogujDoktora: (loginDetalji: LoginDoktoraPodaci) => dispatch(LoginDoktoraPokusaj(loginDetalji))
+        ulogujDoktora: (loginDetalji: LoginDoktoraPodaci) => dispatch(A_LoginDoktoraProba(loginDetalji))
     }
 }
 

@@ -24,7 +24,7 @@ export interface LoginDoktoraProba
     loginPodaci: LoginDoktoraPodaci
 }
 
-export interface LoginDoktoraUspesan
+export interface LoginDoktoraUspeh
 {
     type: AkcijeDoktor,
     doktor: Doktor

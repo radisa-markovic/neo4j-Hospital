@@ -1,6 +1,6 @@
 import * as saga from 'redux-saga/effects';
-import { AkcijeOdeljenja, UcitavanjeOdeljenjaIzBaze, DodavanjePacijenta, OtpustanjePacijenta } from './model';
-import { ProslediOdeljenjeReduceru, ProslediPraznoOdeljenjeAkcija } from './akcije';
+import { AkcijeOdeljenja, UcitajOdeljenjaIzBaze, DodajPacijenta, OtpustiPacijenta } from './model';
+import { A_ProslediOdeljenjeReduceru, A_ProslediPraznoOdeljenje } from './akcije';
 import { Pacijent } from '../../models/Pacijent';
 
 const OdeljenjeOsnovniURL: string = "https://localhost:44389/api/Odeljenje";
@@ -17,7 +17,7 @@ function* posmatrajZahteve()
     yield saga.takeEvery(AkcijeOdeljenja.OTPUSTI_PACIJENTA, otpustiPacijenta);
 }
 
-function* ucitajOdeljenje(akcija: UcitavanjeOdeljenjaIzBaze)
+function* ucitajOdeljenje(akcija: UcitajOdeljenjaIzBaze)
 {
     let { nazivOdeljenja } = akcija;
     
@@ -25,19 +25,19 @@ function* ucitajOdeljenje(akcija: UcitavanjeOdeljenjaIzBaze)
                                         `${OdeljenjeOsnovniURL}/PacijentiSaOdeljenja/${nazivOdeljenja}`);
     
     if(pacijentiSaNavedenogOdeljenja.length === 0)
-        yield saga.put(ProslediPraznoOdeljenjeAkcija());
+        yield saga.put(A_ProslediPraznoOdeljenje());
     else
-        yield saga.put(ProslediOdeljenjeReduceru(pacijentiSaNavedenogOdeljenja));
+        yield saga.put(A_ProslediOdeljenjeReduceru(pacijentiSaNavedenogOdeljenja));
 }
 
-function* dodajPacijenta(akcija: DodavanjePacijenta)
+function* dodajPacijenta(akcija: DodajPacijenta)
 {
     const { pacijent } = akcija;
     
     yield uputiZahtevKaBazi("POST", `${OdeljenjeOsnovniURL}/DodajPacijenta`, pacijent);
 }
 
-function* otpustiPacijenta(akcija: OtpustanjePacijenta)
+function* otpustiPacijenta(akcija: OtpustiPacijenta)
 {
     const { IDPacijenta } = akcija;
     yield uputiZahtevKaBazi("DELETE", `${OdeljenjeOsnovniURL}/OtpustiPacijenta/${IDPacijenta}`)

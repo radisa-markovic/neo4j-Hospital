@@ -1,7 +1,7 @@
 import React from "react";
 import { Izvestaj } from "../models/Izvestaj";
 import { Dispatch } from "redux";
-import { DodajIzvestaj } from "../store/izvestaji/akcije";
+import { A_DodajIzvestaj } from "../store/izvestaji/akcije";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
 import uniqid from 'uniqid';
@@ -90,7 +90,7 @@ const mapStateToProps = (rootStanje: RootStanje): Props => {
 
 const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
     return {
-        potvrdiIzvestaj: (noviIzvestaj: Izvestaj) => dispatch(DodajIzvestaj(noviIzvestaj))
+        potvrdiIzvestaj: (noviIzvestaj: Izvestaj) => dispatch(A_DodajIzvestaj(noviIzvestaj))
     }
 }
 

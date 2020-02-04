@@ -5,7 +5,7 @@ import { RootStanje } from "../store";
 import { connect } from "react-redux";
 import IzvestajView from "./IzvestajView";
 import { Dispatch } from "redux";
-import { VratiPacijentoveIzvestaje, ResetujStatuseAkcija } from "../store/izvestaji/akcije";
+import { A_VratiPacijentoveIzvestaje, A_ResetujStatuseAkcija } from "../store/izvestaji/akcije";
 
 import vojaKalas from '../slikeZaHome/VojaKalas.jpg'
 
@@ -81,8 +81,8 @@ const mapStateToProps = (rootStanje: RootStanje): Props => {
 
 const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
     return {
-        ucitajPacijentoveIzvestaje: (IDPacijenta: string) => dispatch(VratiPacijentoveIzvestaje(IDPacijenta)),
-        povratakUOdeljenje: () => dispatch(ResetujStatuseAkcija())
+        ucitajPacijentoveIzvestaje: (IDPacijenta: string) => dispatch(A_VratiPacijentoveIzvestaje(IDPacijenta)),
+        povratakUOdeljenje: () => dispatch(A_ResetujStatuseAkcija())
     }
 }
 

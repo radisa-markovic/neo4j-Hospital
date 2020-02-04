@@ -1,6 +1,6 @@
 import { Pacijent } from "../../models/Pacijent";
 import { Action } from "redux";
-import { AkcijeOdeljenja, DodavanjePacijenta, OtpustanjePacijenta, ProsledjivanjeOdeljenjaUReducer, UcitavanjeOdeljenjaIzBaze, ProslediPraznoOdeljenjeUReducer } from "./model";
+import { AkcijeOdeljenja, DodajPacijenta, OtpustiPacijenta, ProslediOdeljenjeReduceru, UcitajOdeljenjaIzBaze, ProslediPraznoOdeljenje } from "./model";
 
 export interface StanjeOdeljenja
 {
@@ -23,7 +23,7 @@ export default function reducer(stanje: StanjeOdeljenja = pocetnoStanje, akcija:
     {
         case AkcijeOdeljenja.UCITAJ_ODELJENJE_IZ_BAZE:
         {
-            const { nazivOdeljenja } = akcija as UcitavanjeOdeljenjaIzBaze;
+            const { nazivOdeljenja } = akcija as UcitajOdeljenjaIzBaze;
             return {
                 ...stanje,
                 nazivOdeljenja: nazivOdeljenja
@@ -41,7 +41,7 @@ export default function reducer(stanje: StanjeOdeljenja = pocetnoStanje, akcija:
 
         case AkcijeOdeljenja.PROSLEDI_ODELJENJE_U_REDUCER:
         {
-            const { pacijenti } = akcija as ProsledjivanjeOdeljenjaUReducer;
+            const { pacijenti } = akcija as ProslediOdeljenjeReduceru;
             return {
                 ...stanje,
                 pacijenti: pacijenti,
@@ -52,7 +52,7 @@ export default function reducer(stanje: StanjeOdeljenja = pocetnoStanje, akcija:
 
         case AkcijeOdeljenja.DODAJ_PACIJENTA:
         {
-            const { pacijent } = akcija as DodavanjePacijenta;
+            const { pacijent } = akcija as DodajPacijenta;
             return {
                 ...stanje,
                 pacijenti: [...stanje.pacijenti, pacijent]
@@ -61,7 +61,7 @@ export default function reducer(stanje: StanjeOdeljenja = pocetnoStanje, akcija:
 
         case AkcijeOdeljenja.OTPUSTI_PACIJENTA:
         {
-            const { IDPacijenta } = akcija as OtpustanjePacijenta;
+            const { IDPacijenta } = akcija as OtpustiPacijenta;
             return {
                 ...stanje,
                 pacijenti: stanje.pacijenti.filter(pacijent => pacijent.idPacijenta !== IDPacijenta)

@@ -1,6 +1,6 @@
 import * as saga from 'redux-saga/effects';
 import { AkcijeDoktor, LoginDoktoraProba, RegistracijaDoktoraPokusaj } from './model';
-import { LoginDoktoraLosUsername, LoginDoktoraLosaSifra, LoginDoktoraUspeh, RegistracijaDoktoraUspesna, RegistracijeDoktoraLosUsername } from './akcije';
+import { A_LoginDoktoraNepostojeciUsername, A_LoginDoktoraPogresnaSifra, A_LoginDoktoraUspeh, A_RegistracijaDoktoraUspeh, A_RegistracijaDoktoraZauzetUsername } from './akcije';
 
 const DoktoriOsnovniURL: string = "https://localhost:44389/api/Doktor";
 
@@ -26,11 +26,11 @@ function* ulogujDoktora(akcija: LoginDoktoraProba)
     
     switch(rezultatFetcha)
     {
-        case 1001: yield saga.put(LoginDoktoraLosUsername()); break;
+        case 1001: yield saga.put(A_LoginDoktoraNepostojeciUsername()); break;
         
-        case 1002: yield saga.put(LoginDoktoraLosaSifra()); break;
+        case 1002: yield saga.put(A_LoginDoktoraPogresnaSifra()); break;
          
-        default: yield saga.put(LoginDoktoraUspeh(rezultatFetcha)); break;
+        default: yield saga.put(A_LoginDoktoraUspeh(rezultatFetcha)); break;
          
     }
 
@@ -46,9 +46,9 @@ function* registrujDoktora(akcija: RegistracijaDoktoraPokusaj)
                                                     noviDoktor);
     
     if(statusKodRegistracije === 1001)
-        yield saga.put(RegistracijeDoktoraLosUsername());
+        yield saga.put(A_RegistracijaDoktoraZauzetUsername());
     else
-        yield saga.put(RegistracijaDoktoraUspesna(noviDoktor));
+        yield saga.put(A_RegistracijaDoktoraUspeh(noviDoktor));
 }
 
 function* uputiZahtevKaBazi(metoda: string, URL: string, podaci?: any)//podaci su opcioni, valjda ovako ide

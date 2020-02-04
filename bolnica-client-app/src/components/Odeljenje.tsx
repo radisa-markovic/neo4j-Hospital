@@ -3,7 +3,7 @@ import { Pacijent } from "../models/Pacijent";
 import { RouteComponentProps, Redirect, Link } from "react-router-dom";
 import { RootStanje } from "../store";
 import { Dispatch } from "redux";
-import { UcitajOdeljenjeIzBaze, VratiStatuseNaPocetnoAkcija } from "../store/odeljenja/akcije";
+import { A_UcitajOdeljenjeIzBaze, A_VratiStatuseNaPocetno } from "../store/odeljenja/akcije";
 import { connect } from "react-redux";
 import PacijentView from "./PacijentView";
 
@@ -93,8 +93,8 @@ const mapStateToProps = (rootStanje: RootStanje): Props => {
 
 const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
     return {
-        ucitajPacijente: (nazivOdeljenja: string) => dispatch(UcitajOdeljenjeIzBaze(nazivOdeljenja)),
-        resetujStatuse: () => dispatch(VratiStatuseNaPocetnoAkcija())
+        ucitajPacijente: (nazivOdeljenja: string) => dispatch(A_UcitajOdeljenjeIzBaze(nazivOdeljenja)),
+        resetujStatuse: () => dispatch(A_VratiStatuseNaPocetno())
     }
 }
 
